@@ -4,6 +4,11 @@
  */
 package View;
 
+import DAOClass.CRUD_DAO;
+import Model.NhanVien;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Hyun
@@ -13,8 +18,12 @@ public class LoginFrame extends javax.swing.JFrame {
     /**
      * Creates new form LoginFrame
      */
+    CRUD_DAO crud_dao = new CRUD_DAO();
+    ArrayList<NhanVien> list = crud_dao.getList();
+
     public LoginFrame() {
         initComponents();
+
     }
 
     /**
@@ -30,7 +39,7 @@ public class LoginFrame extends javax.swing.JFrame {
         txtusername = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        txtpassword = new javax.swing.JPasswordField();
         jLabel4 = new javax.swing.JLabel();
         btnlogin = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -58,9 +67,9 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/App-Slogan.png"))); // NOI18N
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 72, -1, -1));
 
-        jPasswordField1.setBackground(new java.awt.Color(255, 255, 255));
-        jPasswordField1.setBorder(null);
-        jPanel1.add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 260, 240, 30));
+        txtpassword.setBackground(new java.awt.Color(255, 255, 255));
+        txtpassword.setBorder(null);
+        jPanel1.add(txtpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 260, 240, 30));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Password-field.png"))); // NOI18N
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, -1, -1));
@@ -82,6 +91,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
         jLabel6.setForeground(new java.awt.Color(204, 0, 0));
         jLabel6.setText("Click here !");
+        jLabel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 370, -1, -1));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Username-field.png"))); // NOI18N
@@ -102,7 +112,25 @@ public class LoginFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
-        // TODO add your handling code here:
+        String username = txtusername.getText();
+        String password = new String(txtpassword.getPassword());
+        Boolean check = false;
+
+        for (NhanVien nhanVien : list) {
+            if (nhanVien.getMaNhanVien().equals(username) && nhanVien.getMatKhau().equals(password)) {
+                System.out.println("OK");
+                String role = nhanVien.getVaiTro();
+                HomeFrame homeFrame = new HomeFrame(username, role);
+                homeFrame.setVisible(true);
+                this.setVisible(false);
+                check = true;
+                break;
+            }
+        }
+
+        if (!check) {
+            JOptionPane.showMessageDialog(this, "Please recheck your information!");
+        }
     }//GEN-LAST:event_btnloginActionPerformed
 
     private void txtusernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtusernameActionPerformed
@@ -153,7 +181,7 @@ public class LoginFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JPasswordField txtpassword;
     private javax.swing.JTextField txtusername;
     // End of variables declaration//GEN-END:variables
 }
