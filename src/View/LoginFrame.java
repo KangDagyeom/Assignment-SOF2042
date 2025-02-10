@@ -120,9 +120,10 @@ public class LoginFrame extends javax.swing.JFrame {
             if (nhanVien.getMaNhanVien().equals(username) && nhanVien.getMatKhau().equals(password)) {
                 System.out.println("OK");
                 String role = nhanVien.getVaiTro();
-                HomeFrame homeFrame = new HomeFrame(username, role);
+                String tenNV = nhanVien.getHoTen();
+                HomeFrame homeFrame = new HomeFrame(tenNV, role);
                 homeFrame.setVisible(true);
-                this.setVisible(false);
+                this.dispose();
                 check = true;
                 break;
             }

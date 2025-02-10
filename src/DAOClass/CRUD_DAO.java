@@ -63,5 +63,4 @@ public class CRUD_DAO {
     }
 
 }
-// Viết 1 hàm duy nhất để thực thi tất cả các truy 
-// vấn SQL cho mọi bảng
+

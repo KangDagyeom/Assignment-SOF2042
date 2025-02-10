@@ -26,6 +26,11 @@ public class HomeFrame extends javax.swing.JFrame {
      * Creates new form HomeFrame
      */
     private Map<String, Font> fontCache = new HashMap<>();
+
+    public HomeFrame() {
+        
+    }
+
     public HomeFrame(String username, String role) {
         initComponents();
         txtusername.setText(username);
@@ -39,7 +44,8 @@ public class HomeFrame extends javax.swing.JFrame {
         date.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 14));
         txtcourses.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 14));
         txtcalendar.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 20));
-        
+        txtusername.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 16));
+        txtrole.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 14));
         System.out.println("Font dang dung: " + txtcourses.getFont().getFontName());
         Date d = new Date();
         SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM", Locale.ENGLISH);
@@ -52,7 +58,7 @@ public class HomeFrame extends javax.swing.JFrame {
 
         String suffix = "th";
         String formattedDate = month + " " + day + suffix + ", " + year;
-        
+
         date.setText(formattedDate);
         System.out.println(formattedDate);
     }
@@ -203,7 +209,7 @@ public class HomeFrame extends javax.swing.JFrame {
 
         txtusername.setForeground(new java.awt.Color(0, 0, 0));
         txtusername.setText("Username");
-        jPanel1.add(txtusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 20, -1, -1));
+        jPanel1.add(txtusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 20, -1, -1));
 
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Blue-line-img.png"))); // NOI18N
         jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 100, -1, -1));
@@ -259,7 +265,7 @@ public class HomeFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                String username = txtusername.getText();
+
                 new HomeFrame().setVisible(true);
             }
         });
