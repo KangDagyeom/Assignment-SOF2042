@@ -5,6 +5,7 @@
 package View;
 
 import DAOClass.NhanVienDAO;
+import DAOClass.UserSession;
 import Models.NhanVien;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -123,8 +124,10 @@ public class LoginFrame extends javax.swing.JFrame {
                 String role = nhanVien.getVaiTro() ? "Manager" : "Clerk";
                 String tenNV = nhanVien.getHoTen();
                 String gioiTinh = nhanVien.getGioiTinh();
-                HomeFrame homeFrame = new HomeFrame(tenNV, role, gioiTinh);
-                homeFrame.setVisible(true);
+                UserSession.setUser(tenNV, role, gioiTinh);
+                new HomeFrame().setVisible(true);
+                this.dispose();
+
                 this.dispose();
                 check = true;
                 break;

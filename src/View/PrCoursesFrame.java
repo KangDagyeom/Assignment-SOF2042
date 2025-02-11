@@ -4,6 +4,11 @@
  */
 package View;
 
+import DAOClass.UserSession;
+import java.io.File;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Hyun
@@ -15,6 +20,40 @@ public class PrCoursesFrame extends javax.swing.JFrame {
      */
     public PrCoursesFrame() {
         initComponents();
+        loadUserData();
+    }
+
+    private void loadUserData() {
+        String username = UserSession.getUsername();
+        String role = UserSession.getRole();
+        String gioiTinh = UserSession.getGioiTinh();
+
+        txtusername.setText(username);
+        txtrole.setText(role);
+        setAvatar(gioiTinh);
+        if (username == null || role == null || gioiTinh == null) {
+            JOptionPane.showMessageDialog(this, "Lỗi: Chưa có thông tin đăng nhập!");
+            return;
+        }
+    }
+
+    private void setAvatar(String gioiTinh) {
+        String imagePath = "";
+        if (gioiTinh.equals("Nam")) {
+            imagePath = "C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Male-user-img.png"; // Thay đường dẫn file thật
+        } else if (gioiTinh.equals("Nu")) {
+            imagePath = "C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Female-user-img.png"; // Thay đường dẫn file thật
+        } else {
+            imagePath = "C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Unknow-user-img.png"; // Avatar mặc định
+        }
+
+        // Kiểm tra file tồn tại trước khi đặt icon
+        File file = new File(imagePath);
+        if (file.exists()) {
+            lbavatar.setIcon(new ImageIcon(imagePath));
+        } else {
+            System.out.println("⚠ Lỗi: Không tìm thấy hình ảnh tại " + imagePath);
+        }
     }
 
     /**
@@ -69,6 +108,11 @@ public class PrCoursesFrame extends javax.swing.JFrame {
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Performance-unclick-btn.png"))); // NOI18N
         jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, -1, -1));
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Logout-unclick-btn.png"))); // NOI18N
@@ -134,6 +178,13 @@ public class PrCoursesFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        // TODO add your handling code here:
+        HomeFrame.getInstance().setVisible(true);
+        this.dispose();
+
+    }//GEN-LAST:event_jLabel3MouseClicked
 
     /**
      * @param args the command line arguments

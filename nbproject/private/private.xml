@@ -3,10 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Hyun/Documents/NetBeansProjects/Assignment_sof2042/src/View/LoginFrame.java</file>
-            <file>file:/C:/Users/Hyun/Documents/NetBeansProjects/Assignment_sof2042/src/DAOClass/CRUD_DAO.java</file>
-            <file>file:/C:/Users/Hyun/Documents/NetBeansProjects/Assignment_sof2042/src/View/HomeFrame.java</file>
-            <file>file:/C:/Users/Hyun/Documents/NetBeansProjects/Assignment_sof2042/src/Model/NhanVien.java</file>
+            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/View/PrCoursesFrame.java</file>
+            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/View/HomeFrame.java</file>
+            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/DAOClass/ChuyenDeDAO.java</file>
+            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/View/LoginFrame.java</file>
+            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/Models/ChuyenDe.java</file>
         </group>
     </open-files>
 </project-private>

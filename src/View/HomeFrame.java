@@ -5,6 +5,7 @@
 package View;
 
 import DAOClass.ChuyenDeDAO;
+import DAOClass.UserSession;
 import Models.ChuyenDe;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -22,6 +23,7 @@ import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.plaf.metal.MetalIconFactory;
 
 /**
@@ -36,32 +38,13 @@ public class HomeFrame extends javax.swing.JFrame {
     private Map<String, Font> fontCache = new HashMap<>();
     private ChuyenDeDAO chuyenDeDAO = new ChuyenDeDAO();
     private ArrayList<ChuyenDe> list = chuyenDeDAO.getListChuyenDe();
+    private static HomeFrame instance;
 
     public HomeFrame() {
 
-    }
-
-    public HomeFrame(String username, String role, String gioiTinh) {
         initComponents();
         getHinhChuyenDe();
-        txtusername.setText(username);
-        txtrole.setText(role);
-        String imagePath = "";
-        if (gioiTinh.equals("Nam")) {
-            imagePath = "C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Male-user-img.png"; // Thay đường dẫn file thật
-        } else if (gioiTinh.equals("Nu")) {
-            imagePath = "C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Female-user-img.png"; // Thay đường dẫn file thật
-        } else {
-            imagePath = "C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Unknow-user-img.png"; // Avatar mặc định
-        }
-
-        // Kiểm tra file tồn tại trước khi đặt icon
-        File file = new File(imagePath);
-        if (file.exists()) {
-            lbavatar.setIcon(new ImageIcon(imagePath));
-        } else {
-            System.out.println("⚠ Lỗi: Không tìm thấy hình ảnh tại " + imagePath);
-        }
+        loadUserData();
 
         // Tải các font từ thư mục resources
         loadFont("Poppins-SemiBold", "/fonts/FZ Poppins-SemiBold.ttf");
@@ -89,6 +72,27 @@ public class HomeFrame extends javax.swing.JFrame {
 
         date.setText(formattedDate);
         System.out.println(formattedDate);
+    }
+
+    private void loadUserData() {
+        String username = UserSession.getUsername();
+        String role = UserSession.getRole();
+        String gioiTinh = UserSession.getGioiTinh();
+
+        txtusername.setText(username);
+        txtrole.setText(role);
+        setAvatar(gioiTinh);
+        if (username == null || role == null || gioiTinh == null) {
+            JOptionPane.showMessageDialog(this, "Lỗi: Chưa có thông tin đăng nhập!");
+            return;
+        }
+    }
+
+    public static HomeFrame getInstance() {
+        if (instance == null) {
+            instance = new HomeFrame();
+        }
+        return instance;
     }
 
     private void loadFont(String fontName, String path) {
@@ -141,6 +145,25 @@ public class HomeFrame extends javax.swing.JFrame {
             }
         }
 
+    }
+
+    private void setAvatar(String gioiTinh) {
+        String imagePath = "";
+        if (gioiTinh.equals("Nam")) {
+            imagePath = "C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Male-user-img.png"; // Thay đường dẫn file thật
+        } else if (gioiTinh.equals("Nu")) {
+            imagePath = "C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Female-user-img.png"; // Thay đường dẫn file thật
+        } else {
+            imagePath = "C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Unknow-user-img.png"; // Avatar mặc định
+        }
+
+        // Kiểm tra file tồn tại trước khi đặt icon
+        File file = new File(imagePath);
+        if (file.exists()) {
+            lbavatar.setIcon(new ImageIcon(imagePath));
+        } else {
+            System.out.println("⚠ Lỗi: Không tìm thấy hình ảnh tại " + imagePath);
+        }
     }
 
     /**
@@ -237,6 +260,11 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Pr-container.png"))); // NOI18N
         jLabel7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 120, -1, -1));
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Python-container.png"))); // NOI18N
@@ -302,6 +330,13 @@ public class HomeFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        PrCoursesFrame prCoursesFrame = new PrCoursesFrame();
+        prCoursesFrame.setVisible(true);
+    }//GEN-LAST:event_jLabel7MouseClicked
 
     /**
      * @param args the command line arguments
