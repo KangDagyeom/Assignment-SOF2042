@@ -1,12 +1,13 @@
 package DAOClass;
 
-import Model.NhanVien;
+import Models.ChuyenDe;
+import Models.NhanVien;
 import java.sql.*; // chỉ cho nhanh & lười
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class CRUD_DAO {
+public class NhanVienDAO {
 
     private static final String CONNECTION_URL = "jdbc:sqlserver://localhost:1433;databaseName=SOF2042_ASSIGNMENT;user=sa;password=123;trustServerCertificate=true";
 
@@ -22,7 +23,7 @@ public class CRUD_DAO {
                 rs.getString("GioiTinh"),
                 rs.getString("SoDienThoai"),
                 rs.getString("DiaChi"),
-                rs.getString("VaiTro"),
+                rs.getBoolean("VaiTro"),
                 rs.getString("MatKhau")
         );
     }
@@ -63,4 +64,3 @@ public class CRUD_DAO {
     }
 
 }
-

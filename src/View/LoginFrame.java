@@ -4,8 +4,8 @@
  */
 package View;
 
-import DAOClass.CRUD_DAO;
-import Model.NhanVien;
+import DAOClass.NhanVienDAO;
+import Models.NhanVien;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -18,7 +18,7 @@ public class LoginFrame extends javax.swing.JFrame {
     /**
      * Creates new form LoginFrame
      */
-    CRUD_DAO crud_dao = new CRUD_DAO();
+    NhanVienDAO crud_dao = new NhanVienDAO();
     ArrayList<NhanVien> list = crud_dao.getList();
 
     public LoginFrame() {
@@ -47,6 +47,7 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Coursera Login");
         setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -59,7 +60,7 @@ public class LoginFrame extends javax.swing.JFrame {
                 txtusernameActionPerformed(evt);
             }
         });
-        jPanel1.add(txtusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, 240, 30));
+        jPanel1.add(txtusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, 240, 20));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/App-Logo.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 19, -1, -1));
@@ -119,9 +120,10 @@ public class LoginFrame extends javax.swing.JFrame {
         for (NhanVien nhanVien : list) {
             if (nhanVien.getMaNhanVien().equals(username) && nhanVien.getMatKhau().equals(password)) {
                 System.out.println("OK");
-                String role = nhanVien.getVaiTro();
+                String role = nhanVien.getVaiTro() ? "Manager" : "Clerk";
                 String tenNV = nhanVien.getHoTen();
-                HomeFrame homeFrame = new HomeFrame(tenNV, role);
+                String gioiTinh = nhanVien.getGioiTinh();
+                HomeFrame homeFrame = new HomeFrame(tenNV, role, gioiTinh);
                 homeFrame.setVisible(true);
                 this.dispose();
                 check = true;

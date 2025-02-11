@@ -7,6 +7,7 @@ package View;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -14,7 +15,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.plaf.metal.MetalIconFactory;
 
 /**
  *
@@ -28,13 +32,30 @@ public class HomeFrame extends javax.swing.JFrame {
     private Map<String, Font> fontCache = new HashMap<>();
 
     public HomeFrame() {
-        
+
     }
 
-    public HomeFrame(String username, String role) {
+    public HomeFrame(String username, String role, String gioiTinh) {
         initComponents();
         txtusername.setText(username);
         txtrole.setText(role);
+        String imagePath = "";
+        if (gioiTinh.equals("Nam")) {
+            imagePath = "C:\\Users\\Administrator\\Desktop\\Assignment-SOF2042\\src\\Resources\\Male-user-img.png"; // Thay đường dẫn file thật
+        } else if (gioiTinh.equals("Nu")) {
+            imagePath = "C:\\Users\\Administrator\\Desktop\\Assignment-SOF2042\\src\\Resources\\Female-user-img.png"; // Thay đường dẫn file thật
+        } else {
+            imagePath = "C:\\Users\\Administrator\\Desktop\\Assignment-SOF2042\\src\\Resources\\Unknow-user-img.png"; // Avatar mặc định
+        }
+
+        // Kiểm tra file tồn tại trước khi đặt icon
+        File file = new File(imagePath);
+        if (file.exists()) {
+            lbavatar.setIcon(new ImageIcon(imagePath));
+        } else {
+            System.out.println("⚠ Lỗi: Không tìm thấy hình ảnh tại " + imagePath);
+        }
+
         // Tải các font từ thư mục resources
         loadFont("Poppins-SemiBold", "/fonts/FZ Poppins-SemiBold.ttf");
         loadFont("Poppins-Regular", "/fonts/FZ Poppins-Regular.ttf");
@@ -42,7 +63,7 @@ public class HomeFrame extends javax.swing.JFrame {
         // Đặt font cho nhiều thành phần giao diện
         test1.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 20));
         date.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 14));
-        txtcourses.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 14));
+        txtcourses.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 16));
         txtcalendar.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 20));
         txtusername.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 16));
         txtrole.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 14));
@@ -91,6 +112,10 @@ public class HomeFrame extends javax.swing.JFrame {
         }
     }
 
+    public void getHinhChuyenDe() {
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -103,6 +128,10 @@ public class HomeFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        lbwebfull = new javax.swing.JLabel();
+        lbjs = new javax.swing.JLabel();
+        lbpremiere1 = new javax.swing.JLabel();
+        lbpython1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -114,19 +143,20 @@ public class HomeFrame extends javax.swing.JFrame {
         txtcourses = new javax.swing.JLabel();
         date = new javax.swing.JLabel();
         test1 = new javax.swing.JLabel();
-        Container_course = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         txtcalendar = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
+        lbavatar = new javax.swing.JLabel();
         txtrole = new javax.swing.JLabel();
         txtusername = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         txtimgcat = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
+        Container_course = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Coursera");
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -144,6 +174,18 @@ public class HomeFrame extends javax.swing.JFrame {
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 90, -1, -1));
 
+        lbwebfull.setText("jLabel15");
+        jPanel1.add(lbwebfull, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 560, -1, -1));
+
+        lbjs.setText("jLabel15");
+        jPanel1.add(lbjs, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 430, -1, -1));
+
+        lbpremiere1.setText("jLabel15");
+        jPanel1.add(lbpremiere1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 170, -1, -1));
+
+        lbpython1.setText("jLabel15");
+        jPanel1.add(lbpython1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 300, -1, -1));
+
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/App-logo-homeview.png"))); // NOI18N
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 28, -1, -1));
 
@@ -159,16 +201,16 @@ public class HomeFrame extends javax.swing.JFrame {
         jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, -1, -1));
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Web-full-course.png"))); // NOI18N
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Web-full-container.png"))); // NOI18N
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 510, -1, -1));
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Pr-course.png"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Pr-container.png"))); // NOI18N
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 120, -1, -1));
 
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Python-course.png"))); // NOI18N
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Python-container.png"))); // NOI18N
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 250, -1, -1));
 
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Js-course.png"))); // NOI18N
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Js-container.png"))); // NOI18N
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 380, -1, -1));
 
         txtcourses.setForeground(new java.awt.Color(153, 153, 153));
@@ -182,9 +224,6 @@ public class HomeFrame extends javax.swing.JFrame {
         test1.setForeground(new java.awt.Color(255, 255, 255));
         test1.setText("Course Activity");
         jPanel1.add(test1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, -1, -1));
-
-        Container_course.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Courses-container.png"))); // NOI18N
-        jPanel1.add(Container_course, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 10, -1, -1));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Calendar-img.png"))); // NOI18N
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 360, -1, -1));
@@ -200,12 +239,12 @@ public class HomeFrame extends javax.swing.JFrame {
         txtcalendar.setText("Calendar");
         jPanel1.add(txtcalendar, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 320, -1, -1));
 
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Male-user-img.png"))); // NOI18N
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 10, -1, -1));
+        lbavatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Male-user-img.png"))); // NOI18N
+        jPanel1.add(lbavatar, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 10, -1, -1));
 
         txtrole.setForeground(new java.awt.Color(153, 204, 255));
         txtrole.setText("Role");
-        jPanel1.add(txtrole, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 40, -1, -1));
+        jPanel1.add(txtrole, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 40, -1, -1));
 
         txtusername.setForeground(new java.awt.Color(0, 0, 0));
         txtusername.setText("Username");
@@ -221,6 +260,9 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jLabel14.setText("Today");
         jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 110, -1, -1));
+
+        Container_course.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Courses-container.png"))); // NOI18N
+        jPanel1.add(Container_course, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 10, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 904, 664));
 
@@ -279,7 +321,6 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
@@ -291,6 +332,11 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lbavatar;
+    private javax.swing.JLabel lbjs;
+    private javax.swing.JLabel lbpremiere1;
+    private javax.swing.JLabel lbpython1;
+    private javax.swing.JLabel lbwebfull;
     private javax.swing.JLabel test1;
     private javax.swing.JLabel txtcalendar;
     private javax.swing.JLabel txtcourses;

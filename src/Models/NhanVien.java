@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Model;
+package Models;
 
 import java.util.UUID;
 
@@ -18,10 +18,10 @@ public class NhanVien {
     private String gioiTinh;
     private String soDienThoai;
     private String diaChi;
-    private String vaiTro;
+    private Boolean vaiTro;
     private String matKhau;
 
-    public NhanVien(UUID idNhanVien, String maNhanVien, String hoTen, String gioiTinh, String soDienThoai, String diaChi, String vaiTro, String matKhau) {
+    public NhanVien(UUID idNhanVien, String maNhanVien, String hoTen, String gioiTinh, String soDienThoai, String diaChi, Boolean vaiTro, String matKhau) {
         this.idNhanVien = idNhanVien;
         this.maNhanVien = maNhanVien;
         this.hoTen = hoTen;
@@ -80,11 +80,11 @@ public class NhanVien {
         this.diaChi = diaChi;
     }
 
-    public String getVaiTro() {
+    public Boolean getVaiTro() {
         return vaiTro;
     }
 
-    public void setVaiTro(String vaiTro) {
+    public void setVaiTro(Boolean vaiTro) {
         this.vaiTro = vaiTro;
     }
 
