@@ -53,4 +53,9 @@ public class ChuyenDeDAO {
         String query = "SELECT HinhChuyenDe FROM ChuyenDe";
         return executeQuery(query);
     }
+
+    public ArrayList<ChuyenDe> getListChuyenDe() {
+        String query = "SELECT * FROM ChuyenDe";
+        return executeQuery(query);
+    }
 }

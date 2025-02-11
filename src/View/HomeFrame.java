@@ -4,6 +4,8 @@
  */
 package View;
 
+import DAOClass.ChuyenDeDAO;
+import Models.ChuyenDe;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -11,8 +13,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.swing.Icon;
@@ -30,6 +34,8 @@ public class HomeFrame extends javax.swing.JFrame {
      * Creates new form HomeFrame
      */
     private Map<String, Font> fontCache = new HashMap<>();
+    private ChuyenDeDAO chuyenDeDAO = new ChuyenDeDAO();
+    private ArrayList<ChuyenDe> list = chuyenDeDAO.getListChuyenDe();
 
     public HomeFrame() {
 
@@ -37,15 +43,16 @@ public class HomeFrame extends javax.swing.JFrame {
 
     public HomeFrame(String username, String role, String gioiTinh) {
         initComponents();
+        getHinhChuyenDe();
         txtusername.setText(username);
         txtrole.setText(role);
         String imagePath = "";
         if (gioiTinh.equals("Nam")) {
-            imagePath = "C:\\Users\\Administrator\\Desktop\\Assignment-SOF2042\\src\\Resources\\Male-user-img.png"; // Thay đường dẫn file thật
+            imagePath = "C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Male-user-img.png"; // Thay đường dẫn file thật
         } else if (gioiTinh.equals("Nu")) {
-            imagePath = "C:\\Users\\Administrator\\Desktop\\Assignment-SOF2042\\src\\Resources\\Female-user-img.png"; // Thay đường dẫn file thật
+            imagePath = "C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Female-user-img.png"; // Thay đường dẫn file thật
         } else {
-            imagePath = "C:\\Users\\Administrator\\Desktop\\Assignment-SOF2042\\src\\Resources\\Unknow-user-img.png"; // Avatar mặc định
+            imagePath = "C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Unknow-user-img.png"; // Avatar mặc định
         }
 
         // Kiểm tra file tồn tại trước khi đặt icon
@@ -114,6 +121,26 @@ public class HomeFrame extends javax.swing.JFrame {
 
     public void getHinhChuyenDe() {
 
+        List<String> imagePaths = new ArrayList<>();
+
+        for (ChuyenDe chuyenDe : list) {
+            imagePaths.add(chuyenDe.getHinhChuyenDe());
+        }
+
+        JLabel[] lbLabels = {lbpremiere1, lbpython1, lbjs, lbwebfull};
+
+        for (int i = 0; i < Math.min(imagePaths.size(), lbLabels.length); i++) {
+            String imagePath = imagePaths.get(i);
+            File file = new File(imagePath);
+
+            if (file.exists()) {
+                lbLabels[i].setText(null);
+                lbLabels[i].setIcon(new ImageIcon(imagePath));
+            } else {
+                System.out.println("⚠ Lỗi: Không tìm thấy hình ảnh tại " + imagePath);
+            }
+        }
+
     }
 
     /**
@@ -175,16 +202,19 @@ public class HomeFrame extends javax.swing.JFrame {
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 90, -1, -1));
 
         lbwebfull.setText("jLabel15");
-        jPanel1.add(lbwebfull, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 560, -1, -1));
+        jPanel1.add(lbwebfull, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 530, -1, -1));
 
+        lbjs.setForeground(new java.awt.Color(0, 0, 0));
         lbjs.setText("jLabel15");
-        jPanel1.add(lbjs, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 430, -1, -1));
+        jPanel1.add(lbjs, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 400, -1, -1));
 
+        lbpremiere1.setForeground(new java.awt.Color(0, 0, 0));
         lbpremiere1.setText("jLabel15");
-        jPanel1.add(lbpremiere1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 170, -1, -1));
+        jPanel1.add(lbpremiere1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 140, -1, -1));
 
+        lbpython1.setForeground(new java.awt.Color(0, 0, 0));
         lbpython1.setText("jLabel15");
-        jPanel1.add(lbpython1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 300, -1, -1));
+        jPanel1.add(lbpython1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 270, -1, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/App-logo-homeview.png"))); // NOI18N
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 28, -1, -1));
@@ -202,15 +232,19 @@ public class HomeFrame extends javax.swing.JFrame {
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, -1, -1));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Web-full-container.png"))); // NOI18N
+        jLabel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 510, -1, -1));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Pr-container.png"))); // NOI18N
+        jLabel7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 120, -1, -1));
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Python-container.png"))); // NOI18N
+        jLabel8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 250, -1, -1));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Js-container.png"))); // NOI18N
+        jLabel9.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 380, -1, -1));
 
         txtcourses.setForeground(new java.awt.Color(153, 153, 153));
