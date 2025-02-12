@@ -19,7 +19,7 @@ public class Topic {
         this.description = description;
         this.iconPath = iconPath;
     }
-
+    
     public String getTitle() {
         return title;
     }

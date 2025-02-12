@@ -235,6 +235,7 @@ public class HomeFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Coursera");
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -243,7 +244,7 @@ public class HomeFrame extends javax.swing.JFrame {
         lbtitle1.setForeground(new java.awt.Color(255, 255, 255));
         lbtitle1.setText("title");
         jPanel1.add(lbtitle1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 150, -1, -1));
-        jPanel1.add(lbicon4, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 530, -1, -1));
+        jPanel1.add(lbicon4, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 530, -1, -1));
 
         lbicon3.setForeground(new java.awt.Color(0, 0, 0));
         jPanel1.add(lbicon3, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 400, -1, -1));
@@ -257,7 +258,7 @@ public class HomeFrame extends javax.swing.JFrame {
         lbdescription1.setForeground(new java.awt.Color(255, 255, 255));
         lbdescription1.setText("jLabel15");
         lbdescription1.setPreferredSize(new java.awt.Dimension(200, 50));
-        jPanel1.add(lbdescription1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 170, 160, 40));
+        jPanel1.add(lbdescription1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 160, 160, 40));
 
         lbtitle2.setForeground(new java.awt.Color(255, 255, 255));
         lbtitle2.setText("jLabel12");
@@ -266,7 +267,7 @@ public class HomeFrame extends javax.swing.JFrame {
         lbdescription2.setForeground(new java.awt.Color(255, 255, 255));
         lbdescription2.setText("jLabel15");
         lbdescription2.setPreferredSize(new java.awt.Dimension(200, 50));
-        jPanel1.add(lbdescription2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 300, 160, -1));
+        jPanel1.add(lbdescription2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 290, 160, -1));
 
         lbtitle3.setForeground(new java.awt.Color(255, 255, 255));
         lbtitle3.setText("jLabel12");
@@ -275,22 +276,27 @@ public class HomeFrame extends javax.swing.JFrame {
         lbdescription3.setForeground(new java.awt.Color(255, 255, 255));
         lbdescription3.setText("jLabel15");
         lbdescription3.setPreferredSize(new java.awt.Dimension(200, 50));
-        jPanel1.add(lbdescription3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 430, 160, -1));
+        jPanel1.add(lbdescription3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 420, 160, -1));
 
         lbtitle4.setForeground(new java.awt.Color(255, 255, 255));
         lbtitle4.setText("jLabel12");
-        jPanel1.add(lbtitle4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 550, -1, -1));
+        jPanel1.add(lbtitle4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 540, -1, -1));
 
         lbdescription4.setForeground(new java.awt.Color(255, 255, 255));
         lbdescription4.setText("jLabel15");
         lbdescription4.setPreferredSize(new java.awt.Dimension(200, 50));
-        jPanel1.add(lbdescription4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 570, 160, -1));
+        jPanel1.add(lbdescription4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 550, 160, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/App-logo-homeview.png"))); // NOI18N
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 28, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Courses-unclick-btn.png"))); // NOI18N
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, -1, -1));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Performance-clicked-btn.png"))); // NOI18N
@@ -400,9 +406,7 @@ public class HomeFrame extends javax.swing.JFrame {
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
         // TODO add your handling code here:
-        this.dispose();
-        PrCoursesFrame prCoursesFrame = new PrCoursesFrame();
-        prCoursesFrame.setVisible(true);
+
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
@@ -420,6 +424,13 @@ public class HomeFrame extends javax.swing.JFrame {
             updateUI();
         }
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        CoursesFrame prCoursesFrame = new CoursesFrame();
+        prCoursesFrame.setVisible(true);
+    }//GEN-LAST:event_jLabel1MouseClicked
 
     /**
      * @param args the command line arguments

@@ -5,26 +5,67 @@
 package View;
 
 import DAOClass.ChuyenDeDAO;
+import DAOClass.Course;
+import DAOClass.KhoaHocDAO;
 import DAOClass.UserSession;
-import Models.ChuyenDe;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 /**
  *
  * @author Hyun
  */
-public class PrCoursesFrame extends javax.swing.JFrame {
+public class CoursesFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form CoursesFrame
      */
-   
-    public PrCoursesFrame() {
+    private Map<String, Font> fontCache = new HashMap<>();
+    private KhoaHocDAO khoaHocDAO = new KhoaHocDAO();
+    private ArrayList<Course> courses = khoaHocDAO.loadCoursesFromDatabase();
+    private int currentPage = 0;
+    private final int ITEMS_PER_PAGE = 3;
+
+    public CoursesFrame() {
         initComponents();
+        updateUI();
+        loadFont("Poppins-SemiBold", "/fonts/FZ Poppins-SemiBold.ttf");
+        loadFont("Poppins-Regular", "/fonts/FZ Poppins-Regular.ttf");
+        txtusername.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 16));
+        txtrole.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 14));
         loadUserData();
+
+    }
+
+    private void loadFont(String fontName, String path) {
+        try (InputStream fontStream = getClass().getResourceAsStream(path)) {
+            if (fontStream == null) {
+                System.err.println("Font file not found: " + path);
+                return;
+            }
+            Font font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
+            fontCache.put(fontName, font);
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Font getCustomFont(String fontName, int style, float size) {
+        Font baseFont = fontCache.get(fontName);
+        return (baseFont != null) ? baseFont.deriveFont(style, size) : new Font("SansSerif", style, (int) size);
     }
 
     private void loadUserData() {
@@ -60,6 +101,50 @@ public class PrCoursesFrame extends javax.swing.JFrame {
         }
     }
 
+    private void updateUI() {
+        int start = currentPage * ITEMS_PER_PAGE;
+        JTextField[] code = {txtcode1, txtcode2, txtcode3};
+        JTextField[] name = {txtname1, txtname2, txtname3};
+        JTextField[] price = {txtprice1, txtprice2, txtprice3};
+        JTextArea[] des = {txtdes1, txtdes2, txtdes3};
+        JTextField[] status = {txtstatus1, txtstatus2, txtstatus3};
+        JLabel[] iconLabels = {lbpr1, lbpr2, lbpr3};
+
+        for (int i = 0; i < ITEMS_PER_PAGE; i++) {
+            int index = start + i;
+            if (index < courses.size()) {
+                Course course = courses.get(index);
+                code[i].setText(course.getMaKhoaHoc());
+                name[i].setText(course.getTenKhoaHoc());
+                des[i].setText(course.getMoTa());
+                price[i].setText(course.getHocPhi().toString());
+                status[i].setText(course.getTrangThai());
+                ImageIcon icon = new ImageIcon(course.getHinhKhoaHoc());
+                iconLabels[i].setIcon(icon);
+
+                code[i].setVisible(true);
+                name[i].setVisible(true);
+                des[i].setVisible(true);
+                price[i].setVisible(true);
+                status[i].setVisible(true);
+                iconLabels[i].setVisible(true);
+            } else {
+                code[i].setEditable(false);
+                name[i].setEditable(false);
+                des[i].setEditable(false);
+                price[i].setEditable(false);
+                status[i].setEditable(false);
+                code[i].setText(null);
+                name[i].setText(null);
+                des[i].setText(null);
+                price[i].setText(null);
+                status[i].setText(null);
+                ImageIcon icon = new ImageIcon("C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Unknow-icon.png");
+                iconLabels[i].setIcon(icon);
+            }
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -81,33 +166,30 @@ public class PrCoursesFrame extends javax.swing.JFrame {
         lbavatar = new javax.swing.JLabel();
         txtrole = new javax.swing.JLabel();
         txtusername = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
         lbcourse1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtname1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        txtstatus1 = new javax.swing.JTextField();
+        txtcode1 = new javax.swing.JTextField();
+        txtprice1 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtdes1 = new javax.swing.JTextArea();
         lbcourse3 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jTextField9 = new javax.swing.JTextField();
-        jTextField10 = new javax.swing.JTextField();
+        txtcode3 = new javax.swing.JTextField();
+        txtname3 = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea3 = new javax.swing.JTextArea();
-        jTextField11 = new javax.swing.JTextField();
+        txtdes3 = new javax.swing.JTextArea();
+        txtprice3 = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
-        jTextField12 = new javax.swing.JTextField();
+        txtstatus3 = new javax.swing.JTextField();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         lbpr3container = new javax.swing.JLabel();
@@ -115,34 +197,30 @@ public class PrCoursesFrame extends javax.swing.JFrame {
         lbcourse2 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
+        txtcode2 = new javax.swing.JTextField();
+        txtname2 = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
-        jTextField7 = new javax.swing.JTextField();
+        txtdes2 = new javax.swing.JTextArea();
+        txtprice2 = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
+        txtstatus2 = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         lbpr2container = new javax.swing.JLabel();
         kButton1 = new com.k33ptoo.components.KButton();
-        jButton3 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        btnNext = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Coursera");
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        lbpr3.setText("jLabel8");
-        jPanel1.add(lbpr3, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 480, -1, -1));
-
-        lbpr2.setText("jLabel8");
-        jPanel1.add(lbpr2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 310, -1, -1));
-
-        lbpr1.setText("jLabel8");
-        jPanel1.add(lbpr1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 140, -1, -1));
+        jPanel1.add(lbpr3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 450, -1, -1));
+        jPanel1.add(lbpr2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 280, -1, -1));
+        jPanel1.add(lbpr1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 110, -1, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/App-logo-homeview.png"))); // NOI18N
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 28, -1, -1));
@@ -178,15 +256,6 @@ public class PrCoursesFrame extends javax.swing.JFrame {
         txtusername.setText("Username");
         jPanel1.add(txtusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 20, -1, -1));
 
-        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Blue-line-img.png"))); // NOI18N
-        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 460, 110, 10));
-
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Blue-line-img.png"))); // NOI18N
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 123, 110, 10));
-
-        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Blue-line-img.png"))); // NOI18N
-        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 290, 110, 10));
-
         lbcourse1.setText("Course code:");
         jPanel1.add(lbcourse1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 110, -1, -1));
 
@@ -197,14 +266,14 @@ public class PrCoursesFrame extends javax.swing.JFrame {
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 170, -1, -1));
 
         jLabel7.setText("Course price:");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 110, -1, -1));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 110, -1, -1));
 
         jLabel8.setText("Status:");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 140, -1, -1));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 140, -1, -1));
 
-        jTextField1.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField1.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 140, -1, -1));
+        txtname1.setBackground(new java.awt.Color(255, 255, 255));
+        txtname1.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel1.add(txtname1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 140, 120, -1));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setForeground(new java.awt.Color(0, 0, 0));
@@ -214,37 +283,39 @@ public class PrCoursesFrame extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 110, -1, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 110, -1, -1));
 
-        jTextField2.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField2.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 140, -1, -1));
+        txtstatus1.setBackground(new java.awt.Color(255, 255, 255));
+        txtstatus1.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel1.add(txtstatus1, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 140, 120, -1));
 
-        jTextField3.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField3.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 110, -1, -1));
+        txtcode1.setBackground(new java.awt.Color(255, 255, 255));
+        txtcode1.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel1.add(txtcode1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 110, 120, -1));
 
-        jTextField4.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField4.setForeground(new java.awt.Color(0, 0, 0));
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        txtprice1.setBackground(new java.awt.Color(255, 255, 255));
+        txtprice1.setForeground(new java.awt.Color(0, 0, 0));
+        txtprice1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                txtprice1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 110, -1, -1));
+        jPanel1.add(txtprice1, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 110, 120, -1));
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setForeground(new java.awt.Color(0, 0, 0));
         jButton2.setText("Remove");
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 140, -1, -1));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 140, -1, -1));
 
-        jTextArea1.setBackground(new java.awt.Color(255, 255, 255));
-        jTextArea1.setColumns(20);
-        jTextArea1.setForeground(new java.awt.Color(0, 0, 0));
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtdes1.setBackground(new java.awt.Color(255, 255, 255));
+        txtdes1.setColumns(20);
+        txtdes1.setForeground(new java.awt.Color(0, 0, 0));
+        txtdes1.setLineWrap(true);
+        txtdes1.setRows(5);
+        txtdes1.setWrapStyleWord(true);
+        jScrollPane1.setViewportView(txtdes1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 170, 290, 40));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 170, 290, 40));
 
         lbcourse3.setText("Course code:");
         jPanel1.add(lbcourse3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 450, -1, -1));
@@ -255,40 +326,42 @@ public class PrCoursesFrame extends javax.swing.JFrame {
         jLabel18.setText("Description:");
         jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 510, -1, -1));
 
-        jTextField9.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField9.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 450, -1, -1));
+        txtcode3.setBackground(new java.awt.Color(255, 255, 255));
+        txtcode3.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel1.add(txtcode3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 450, 120, -1));
 
-        jTextField10.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField10.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.add(jTextField10, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 480, -1, -1));
+        txtname3.setBackground(new java.awt.Color(255, 255, 255));
+        txtname3.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel1.add(txtname3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 480, 120, -1));
 
-        jTextArea3.setBackground(new java.awt.Color(255, 255, 255));
-        jTextArea3.setColumns(20);
-        jTextArea3.setForeground(new java.awt.Color(0, 0, 0));
-        jTextArea3.setRows(5);
-        jScrollPane3.setViewportView(jTextArea3);
+        txtdes3.setBackground(new java.awt.Color(255, 255, 255));
+        txtdes3.setColumns(20);
+        txtdes3.setForeground(new java.awt.Color(0, 0, 0));
+        txtdes3.setLineWrap(true);
+        txtdes3.setRows(5);
+        txtdes3.setWrapStyleWord(true);
+        jScrollPane3.setViewportView(txtdes3);
 
-        jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 510, 290, 40));
+        jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 510, 290, 40));
 
-        jTextField11.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField11.setForeground(new java.awt.Color(0, 0, 0));
-        jTextField11.addActionListener(new java.awt.event.ActionListener() {
+        txtprice3.setBackground(new java.awt.Color(255, 255, 255));
+        txtprice3.setForeground(new java.awt.Color(0, 0, 0));
+        txtprice3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField11ActionPerformed(evt);
+                txtprice3ActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 450, -1, -1));
+        jPanel1.add(txtprice3, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 450, 120, -1));
 
         jLabel19.setText("Course price:");
-        jPanel1.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 450, -1, -1));
+        jPanel1.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 450, -1, -1));
 
         jLabel20.setText("Status:");
-        jPanel1.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 480, -1, -1));
+        jPanel1.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 480, -1, -1));
 
-        jTextField12.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField12.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.add(jTextField12, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 480, -1, -1));
+        txtstatus3.setBackground(new java.awt.Color(255, 255, 255));
+        txtstatus3.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel1.add(txtstatus3, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 480, 120, -1));
 
         jButton6.setBackground(new java.awt.Color(255, 255, 255));
         jButton6.setForeground(new java.awt.Color(0, 0, 0));
@@ -298,12 +371,12 @@ public class PrCoursesFrame extends javax.swing.JFrame {
                 jButton6ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 450, -1, -1));
+        jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 450, -1, -1));
 
         jButton7.setBackground(new java.awt.Color(255, 255, 255));
         jButton7.setForeground(new java.awt.Color(0, 0, 0));
         jButton7.setText("Remove");
-        jPanel1.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 480, -1, -1));
+        jPanel1.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 480, -1, -1));
 
         lbpr3container.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Pr-Course3-container.png"))); // NOI18N
         jPanel1.add(lbpr3container, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 430, -1, -1));
@@ -321,40 +394,42 @@ public class PrCoursesFrame extends javax.swing.JFrame {
         jLabel11.setText("Description:");
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 340, -1, -1));
 
-        jTextField5.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField5.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 280, -1, -1));
+        txtcode2.setBackground(new java.awt.Color(255, 255, 255));
+        txtcode2.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel1.add(txtcode2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 280, 120, -1));
 
-        jTextField6.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField6.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 310, -1, -1));
+        txtname2.setBackground(new java.awt.Color(255, 255, 255));
+        txtname2.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel1.add(txtname2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 310, 120, -1));
 
-        jTextArea2.setBackground(new java.awt.Color(255, 255, 255));
-        jTextArea2.setColumns(20);
-        jTextArea2.setForeground(new java.awt.Color(0, 0, 0));
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
+        txtdes2.setBackground(new java.awt.Color(255, 255, 255));
+        txtdes2.setColumns(20);
+        txtdes2.setForeground(new java.awt.Color(0, 0, 0));
+        txtdes2.setLineWrap(true);
+        txtdes2.setRows(5);
+        txtdes2.setWrapStyleWord(true);
+        jScrollPane2.setViewportView(txtdes2);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 340, 290, 40));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 340, 290, 40));
 
-        jTextField7.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField7.setForeground(new java.awt.Color(0, 0, 0));
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
+        txtprice2.setBackground(new java.awt.Color(255, 255, 255));
+        txtprice2.setForeground(new java.awt.Color(0, 0, 0));
+        txtprice2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
+                txtprice2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 280, -1, -1));
+        jPanel1.add(txtprice2, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 280, 120, -1));
 
         jLabel12.setText("Course price:");
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 280, -1, -1));
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 280, -1, -1));
 
         jLabel16.setText("Status:");
-        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 310, -1, -1));
+        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 310, -1, -1));
 
-        jTextField8.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField8.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 310, -1, -1));
+        txtstatus2.setBackground(new java.awt.Color(255, 255, 255));
+        txtstatus2.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel1.add(txtstatus2, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 310, 120, -1));
 
         jButton4.setBackground(new java.awt.Color(255, 255, 255));
         jButton4.setForeground(new java.awt.Color(0, 0, 0));
@@ -364,18 +439,22 @@ public class PrCoursesFrame extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 280, -1, -1));
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 280, -1, -1));
 
         jButton5.setBackground(new java.awt.Color(255, 255, 255));
         jButton5.setForeground(new java.awt.Color(0, 0, 0));
         jButton5.setText("Remove");
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 310, -1, -1));
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 310, -1, -1));
 
         lbpr2container.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Pr-Course2-container.png"))); // NOI18N
         jPanel1.add(lbpr2container, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 260, -1, -1));
 
         kButton1.setText("Insert course");
+        kButton1.setkBackGroundColor(new java.awt.Color(0, 0, 0));
         kButton1.setkEndColor(new java.awt.Color(255, 255, 255));
+        kButton1.setkHoverEndColor(new java.awt.Color(51, 51, 51));
+        kButton1.setkHoverForeGround(new java.awt.Color(0, 153, 255));
+        kButton1.setkHoverStartColor(new java.awt.Color(255, 255, 255));
         kButton1.setkStartColor(new java.awt.Color(0, 0, 0));
         kButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -384,11 +463,21 @@ public class PrCoursesFrame extends javax.swing.JFrame {
         });
         jPanel1.add(kButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 50, 110, 30));
 
-        jButton3.setText("Next");
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 50, -1, -1));
+        btnNext.setText("Next");
+        btnNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNextActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnNext, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 50, 60, -1));
 
-        jButton8.setText("Back");
-        jPanel1.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 50, -1, -1));
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 50, 60, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -421,25 +510,25 @@ public class PrCoursesFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jLabel3MouseClicked
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void txtprice1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtprice1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_txtprice1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
+    private void txtprice2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtprice2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
+    }//GEN-LAST:event_txtprice2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jTextField11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField11ActionPerformed
+    private void txtprice3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtprice3ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField11ActionPerformed
+    }//GEN-LAST:event_txtprice3ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
@@ -448,6 +537,22 @@ public class PrCoursesFrame extends javax.swing.JFrame {
     private void kButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_kButton1ActionPerformed
+
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+        // TODO add your handling code here:
+        if ((currentPage + 1) * ITEMS_PER_PAGE < courses.size()) {
+            currentPage++;
+            updateUI();
+        }
+    }//GEN-LAST:event_btnNextActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        if (currentPage > 0) {
+            currentPage--;
+            updateUI();
+        }
+    }//GEN-LAST:event_btnBackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -466,41 +571,40 @@ public class PrCoursesFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PrCoursesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CoursesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PrCoursesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CoursesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PrCoursesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CoursesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PrCoursesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CoursesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PrCoursesFrame().setVisible(true);
+                new CoursesFrame().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnNext;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
@@ -518,21 +622,6 @@ public class PrCoursesFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JTextArea jTextArea3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField12;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
     private com.k33ptoo.components.KButton kButton1;
     private javax.swing.JLabel lbavatar;
     private javax.swing.JLabel lbcourse1;
@@ -544,7 +633,22 @@ public class PrCoursesFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lbpr2container;
     private javax.swing.JLabel lbpr3;
     private javax.swing.JLabel lbpr3container;
+    private javax.swing.JTextField txtcode1;
+    private javax.swing.JTextField txtcode2;
+    private javax.swing.JTextField txtcode3;
+    private javax.swing.JTextArea txtdes1;
+    private javax.swing.JTextArea txtdes2;
+    private javax.swing.JTextArea txtdes3;
+    private javax.swing.JTextField txtname1;
+    private javax.swing.JTextField txtname2;
+    private javax.swing.JTextField txtname3;
+    private javax.swing.JTextField txtprice1;
+    private javax.swing.JTextField txtprice2;
+    private javax.swing.JTextField txtprice3;
     private javax.swing.JLabel txtrole;
+    private javax.swing.JTextField txtstatus1;
+    private javax.swing.JTextField txtstatus2;
+    private javax.swing.JTextField txtstatus3;
     private javax.swing.JLabel txtusername;
     // End of variables declaration//GEN-END:variables
 }
