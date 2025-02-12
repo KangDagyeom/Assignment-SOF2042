@@ -5,6 +5,7 @@
 package View;
 
 import DAOClass.ChuyenDeDAO;
+import DAOClass.Topic;
 import DAOClass.UserSession;
 import Models.ChuyenDe;
 import java.awt.Font;
@@ -25,6 +26,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.metal.MetalIconFactory;
+
 /**
  *
  * @author Hyun
@@ -38,14 +40,15 @@ public class HomeFrame extends javax.swing.JFrame {
     private ChuyenDeDAO chuyenDeDAO = new ChuyenDeDAO();
     private ArrayList<ChuyenDe> list = chuyenDeDAO.getListChuyenDe();
     private static HomeFrame instance;
-    private List<Topic> topics = new ArrayList<>();
+
+    private ArrayList<Topic> topics = chuyenDeDAO.loadTopicsFromDatabase();
     private int currentPage = 0;
     private final int ITEMS_PER_PAGE = 4;
 
     public HomeFrame() {
 
         initComponents();
-        getHinhChuyenDe();
+        updateUI();
         loadUserData();
 
         // Tải các font từ thư mục resources
@@ -54,6 +57,18 @@ public class HomeFrame extends javax.swing.JFrame {
 
         // Đặt font cho nhiều thành phần giao diện
         test1.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 20));
+        lbtitle1.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 13));
+        lbdescription1.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 12));
+
+        lbtitle2.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 13));
+        lbdescription2.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 12));
+
+        lbtitle3.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 13));
+        lbdescription3.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 12));
+
+        lbtitle4.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 13));
+        lbdescription4.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 12));
+
         date.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 14));
         txtcourses.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 16));
         txtcalendar.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 20));
@@ -124,29 +139,32 @@ public class HomeFrame extends javax.swing.JFrame {
             System.out.println(font);
         }
     }
-    JLabel[] titleLabels = {lb};
-    JLabel[] descLabels = {lblDesc1, lblDesc2, lblDesc3, lblDesc4};
-    JLabel[] iconLabels = {lblIcon1, lblIcon2, lblIcon3, lblIcon4};
 
     private void updateUI() {
         int start = currentPage * ITEMS_PER_PAGE;
+        JLabel[] titleLabels = {lbtitle1, lbtitle2, lbtitle3, lbtitle4};
+        JLabel[] descLabels = {lbdescription1, lbdescription2, lbdescription3, lbdescription4};
+        JLabel[] iconLabels = {lbicon1, lbicon2, lbicon3, lbicon4};
 
         for (int i = 0; i < ITEMS_PER_PAGE; i++) {
             int index = start + i;
             if (index < topics.size()) {
                 Topic topic = topics.get(index);
-                titleLabels[i].setText(topic.title);
-                descLabels[i].setText(topic.description);
+                titleLabels[i].setText(null);
+                descLabels[i].setText(null);
+                titleLabels[i].setText(topic.getTitle());
+                descLabels[i].setText(topic.getDescription());
 
                 // Set icon từ đường dẫn
-                ImageIcon icon = new ImageIcon(topic.iconPath);
+                ImageIcon icon = new ImageIcon(topic.getIconPath());
                 iconLabels[i].setIcon(icon);
             } else {
-                titleLabels[i].setText("");
+                titleLabels[i].setText("Fail");
                 descLabels[i].setText("");
                 iconLabels[i].setIcon(null);
             }
         }
+
     }
 
     private void setAvatar(String gioiTinh) {
@@ -211,8 +229,8 @@ public class HomeFrame extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         txtimgcat = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
+        btnNext = new javax.swing.JButton();
         Container_course = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -224,44 +242,49 @@ public class HomeFrame extends javax.swing.JFrame {
 
         lbtitle1.setForeground(new java.awt.Color(255, 255, 255));
         lbtitle1.setText("title");
-        jPanel1.add(lbtitle1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 140, -1, -1));
-
-        lbicon4.setText("jLabel15");
+        jPanel1.add(lbtitle1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 150, -1, -1));
         jPanel1.add(lbicon4, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 530, -1, -1));
 
         lbicon3.setForeground(new java.awt.Color(0, 0, 0));
-        lbicon3.setText("jLabel15");
         jPanel1.add(lbicon3, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 400, -1, -1));
 
         lbicon1.setForeground(new java.awt.Color(0, 0, 0));
-        lbicon1.setText("jLabel15");
         jPanel1.add(lbicon1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 140, -1, -1));
 
         lbicon2.setForeground(new java.awt.Color(0, 0, 0));
-        lbicon2.setText("jLabel15");
         jPanel1.add(lbicon2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 270, -1, -1));
 
         lbdescription1.setForeground(new java.awt.Color(255, 255, 255));
         lbdescription1.setText("jLabel15");
-        jPanel1.add(lbdescription1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 160, -1, -1));
+        lbdescription1.setPreferredSize(new java.awt.Dimension(200, 50));
+        jPanel1.add(lbdescription1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 170, 160, 40));
 
+        lbtitle2.setForeground(new java.awt.Color(255, 255, 255));
         lbtitle2.setText("jLabel12");
         jPanel1.add(lbtitle2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 280, -1, -1));
 
+        lbdescription2.setForeground(new java.awt.Color(255, 255, 255));
         lbdescription2.setText("jLabel15");
-        jPanel1.add(lbdescription2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 300, -1, -1));
+        lbdescription2.setPreferredSize(new java.awt.Dimension(200, 50));
+        jPanel1.add(lbdescription2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 300, 160, -1));
 
+        lbtitle3.setForeground(new java.awt.Color(255, 255, 255));
         lbtitle3.setText("jLabel12");
         jPanel1.add(lbtitle3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 410, -1, -1));
 
+        lbdescription3.setForeground(new java.awt.Color(255, 255, 255));
         lbdescription3.setText("jLabel15");
-        jPanel1.add(lbdescription3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 430, -1, -1));
+        lbdescription3.setPreferredSize(new java.awt.Dimension(200, 50));
+        jPanel1.add(lbdescription3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 430, 160, -1));
 
+        lbtitle4.setForeground(new java.awt.Color(255, 255, 255));
         lbtitle4.setText("jLabel12");
         jPanel1.add(lbtitle4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 550, -1, -1));
 
+        lbdescription4.setForeground(new java.awt.Color(255, 255, 255));
         lbdescription4.setText("jLabel15");
-        jPanel1.add(lbdescription4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 570, -1, -1));
+        lbdescription4.setPreferredSize(new java.awt.Dimension(200, 50));
+        jPanel1.add(lbdescription4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 570, 160, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/App-logo-homeview.png"))); // NOI18N
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 28, -1, -1));
@@ -347,20 +370,25 @@ public class HomeFrame extends javax.swing.JFrame {
         jLabel14.setText("Today");
         jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 110, -1, -1));
 
-        jButton3.setText("Back");
-        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton3.setDefaultCapable(false);
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 90, 60, -1));
-
-        jButton4.setText("Next");
-        jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton4.setDefaultCapable(false);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnBack.setText("Back");
+        btnBack.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBack.setDefaultCapable(false);
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnBackActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 90, 60, -1));
+        jPanel1.add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 90, 60, -1));
+
+        btnNext.setText("Next");
+        btnNext.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnNext.setDefaultCapable(false);
+        btnNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNextActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnNext, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 90, 60, -1));
 
         Container_course.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Courses-container.png"))); // NOI18N
         jPanel1.add(Container_course, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 10, -1, -1));
@@ -377,10 +405,21 @@ public class HomeFrame extends javax.swing.JFrame {
         prCoursesFrame.setVisible(true);
     }//GEN-LAST:event_jLabel7MouseClicked
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
+        if ((currentPage + 1) * ITEMS_PER_PAGE < topics.size()) {
+            currentPage++;
+            updateUI();
+        }
+    }//GEN-LAST:event_btnNextActionPerformed
 
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        if (currentPage > 0) {
+            currentPage--;
+            updateUI();
+        }
+    }//GEN-LAST:event_btnBackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -428,9 +467,9 @@ public class HomeFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Container_course;
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnNext;
     private javax.swing.JLabel date;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

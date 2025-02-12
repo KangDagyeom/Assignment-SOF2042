@@ -15,6 +15,8 @@ import java.util.UUID;
  */
 public class ChuyenDeDAO {
 
+    private ArrayList<Topic> topics = new ArrayList<>();
+
     private static final String CONNECTION_URL = "jdbc:sqlserver://localhost:1433;databaseName=SOF2042_ASSIGNMENT;user=sa;password=123;trustServerCertificate=true";
 
     public static Connection getConnect() throws SQLException {
@@ -72,21 +74,19 @@ public class ChuyenDeDAO {
         return executeQuery(query);
     }
 
-    private void loadTopicsFromDatabase() {
-        try {
-            Connection conn = getConnect();
-            String sql = "SELECT TenChuyenDe,MoTa,HinhChuyenDe FROM ChuyenDe";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery();
-            ArrayList<Topic> topics = new ArrayList<>();
-            while (rs.next()) {
-                topics.add(new Topic(rs.getString("title"), rs.getString("description"), rs.getString("iconPath")));
-            }
+    public ArrayList<Topic> loadTopicsFromDatabase() {
+        try (Connection conn = getConnect(); PreparedStatement stmt = conn.prepareStatement("SELECT TenChuyenDe, MoTa, HinhChuyenDe FROM ChuyenDe"); ResultSet rs = stmt.executeQuery()) {
 
-            conn.close();
+            topics.clear();
+            while (rs.next()) {
+                topics.add(new Topic(rs.getString("TenChuyenDe"),
+                        rs.getString("MoTa"),
+                        rs.getString("HinhChuyenDe")));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return topics;
     }
 
 }

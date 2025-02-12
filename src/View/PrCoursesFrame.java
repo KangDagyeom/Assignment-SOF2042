@@ -6,7 +6,9 @@ package View;
 
 import DAOClass.ChuyenDeDAO;
 import DAOClass.UserSession;
+import Models.ChuyenDe;
 import java.io.File;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -19,7 +21,7 @@ public class PrCoursesFrame extends javax.swing.JFrame {
     /**
      * Creates new form CoursesFrame
      */
-    private ChuyenDeDAO chuyenDeDAO = new ChuyenDeDAO();
+   
     public PrCoursesFrame() {
         initComponents();
         loadUserData();
