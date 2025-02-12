@@ -49,6 +49,19 @@ public class ChuyenDeDAO {
         return list;
     }
 
+    public int executeUpdate(String query, Object... params) {
+        try (Connection conn = getConnect(); PreparedStatement ps = conn.prepareStatement(query)) {
+            for (int i = 0; i < params.length; i++) {
+                ps.setObject(i + 1, params[i]);
+            }
+
+            return ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
     public ArrayList<ChuyenDe> getHinhChuyenDe() {
         String query = "SELECT HinhChuyenDe FROM ChuyenDe";
         return executeQuery(query);
@@ -58,4 +71,22 @@ public class ChuyenDeDAO {
         String query = "SELECT * FROM ChuyenDe";
         return executeQuery(query);
     }
+
+    private void loadTopicsFromDatabase() {
+        try {
+            Connection conn = getConnect();
+            String sql = "SELECT TenChuyenDe,MoTa,HinhChuyenDe FROM ChuyenDe";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            ArrayList<Topic> topics = new ArrayList<>();
+            while (rs.next()) {
+                topics.add(new Topic(rs.getString("title"), rs.getString("description"), rs.getString("iconPath")));
+            }
+
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
