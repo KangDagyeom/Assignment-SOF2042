@@ -40,7 +40,7 @@ public class CoursesFrame extends javax.swing.JFrame {
 
     public CoursesFrame() {
         initComponents();
-        updateUI();
+        updateUI(courses);
         loadFont("Poppins-SemiBold", "/fonts/FZ Poppins-SemiBold.ttf");
         loadFont("Poppins-Regular", "/fonts/FZ Poppins-Regular.ttf");
         txtusername.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 16));
@@ -101,7 +101,7 @@ public class CoursesFrame extends javax.swing.JFrame {
         }
     }
 
-    private void updateUI() {
+    private void updateUI(ArrayList<Course> allCourses) {
         int start = currentPage * ITEMS_PER_PAGE;
         JTextField[] code = {txtcode1, txtcode2, txtcode3};
         JTextField[] name = {txtname1, txtname2, txtname3};
@@ -112,8 +112,8 @@ public class CoursesFrame extends javax.swing.JFrame {
 
         for (int i = 0; i < ITEMS_PER_PAGE; i++) {
             int index = start + i;
-            if (index < courses.size()) {
-                Course course = courses.get(index);
+            if (index < allCourses.size()) {
+                Course course = allCourses.get(index);
                 code[i].setText(course.getMaKhoaHoc());
                 name[i].setText(course.getTenKhoaHoc());
                 des[i].setText(course.getMoTa());
@@ -139,7 +139,7 @@ public class CoursesFrame extends javax.swing.JFrame {
                 des[i].setText(null);
                 price[i].setText(null);
                 status[i].setText(null);
-                ImageIcon icon = new ImageIcon("C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Unknow-icon.png");
+                ImageIcon icon = new ImageIcon("C:\\Users\\Administrator\\Desktop\\Assignment-SOF2042\\src\\Resources\\Unknow-icon.png");
                 iconLabels[i].setIcon(icon);
             }
         }
@@ -208,9 +208,11 @@ public class CoursesFrame extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         lbpr2container = new javax.swing.JLabel();
-        kButton1 = new com.k33ptoo.components.KButton();
         btnNext = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        txtsearchbar = new javax.swing.JTextField();
+        btnsearch = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Coursera");
@@ -240,6 +242,11 @@ public class CoursesFrame extends javax.swing.JFrame {
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Logout-unclick-btn.png"))); // NOI18N
         jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel5MouseClicked(evt);
+            }
+        });
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, -1, -1));
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Thanks-banner-img.png"))); // NOI18N
@@ -256,18 +263,23 @@ public class CoursesFrame extends javax.swing.JFrame {
         txtusername.setText("Username");
         jPanel1.add(txtusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 20, -1, -1));
 
+        lbcourse1.setForeground(new java.awt.Color(255, 255, 255));
         lbcourse1.setText("Course code:");
         jPanel1.add(lbcourse1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 110, -1, -1));
 
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Course name:");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 140, -1, -1));
 
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Description:");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 170, -1, -1));
 
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Course price:");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 110, -1, -1));
 
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Status:");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 140, -1, -1));
 
@@ -317,12 +329,15 @@ public class CoursesFrame extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 170, 290, 40));
 
+        lbcourse3.setForeground(new java.awt.Color(255, 255, 255));
         lbcourse3.setText("Course code:");
         jPanel1.add(lbcourse3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 450, -1, -1));
 
+        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setText("Course name:");
         jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 480, -1, -1));
 
+        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
         jLabel18.setText("Description:");
         jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 510, -1, -1));
 
@@ -353,9 +368,11 @@ public class CoursesFrame extends javax.swing.JFrame {
         });
         jPanel1.add(txtprice3, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 450, 120, -1));
 
+        jLabel19.setForeground(new java.awt.Color(255, 255, 255));
         jLabel19.setText("Course price:");
         jPanel1.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 450, -1, -1));
 
+        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
         jLabel20.setText("Status:");
         jPanel1.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 480, -1, -1));
 
@@ -385,12 +402,15 @@ public class CoursesFrame extends javax.swing.JFrame {
         lbpr1container.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Pr-Course1-container.png"))); // NOI18N
         jPanel1.add(lbpr1container, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 90, -1, -1));
 
+        lbcourse2.setForeground(new java.awt.Color(255, 255, 255));
         lbcourse2.setText("Course code:");
         jPanel1.add(lbcourse2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 280, -1, -1));
 
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Course name:");
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 310, -1, -1));
 
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Description:");
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 340, -1, -1));
 
@@ -421,9 +441,11 @@ public class CoursesFrame extends javax.swing.JFrame {
         });
         jPanel1.add(txtprice2, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 280, 120, -1));
 
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Course price:");
         jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 280, -1, -1));
 
+        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Status:");
         jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 310, -1, -1));
 
@@ -449,20 +471,6 @@ public class CoursesFrame extends javax.swing.JFrame {
         lbpr2container.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Pr-Course2-container.png"))); // NOI18N
         jPanel1.add(lbpr2container, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 260, -1, -1));
 
-        kButton1.setText("Insert course");
-        kButton1.setkBackGroundColor(new java.awt.Color(0, 0, 0));
-        kButton1.setkEndColor(new java.awt.Color(255, 255, 255));
-        kButton1.setkHoverEndColor(new java.awt.Color(51, 51, 51));
-        kButton1.setkHoverForeGround(new java.awt.Color(0, 153, 255));
-        kButton1.setkHoverStartColor(new java.awt.Color(255, 255, 255));
-        kButton1.setkStartColor(new java.awt.Color(0, 0, 0));
-        kButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                kButton1ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(kButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 50, 110, 30));
-
         btnNext.setText("Next");
         btnNext.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -478,6 +486,18 @@ public class CoursesFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 50, 60, -1));
+
+        jButton3.setText("Inert course, topic");
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 50, -1, -1));
+        jPanel1.add(txtsearchbar, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 50, 200, -1));
+
+        btnsearch.setText("Search");
+        btnsearch.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnsearchMouseClicked(evt);
+            }
+        });
+        jPanel1.add(btnsearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 50, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -542,7 +562,7 @@ public class CoursesFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         if ((currentPage + 1) * ITEMS_PER_PAGE < courses.size()) {
             currentPage++;
-            updateUI();
+            updateUI(courses);
         }
     }//GEN-LAST:event_btnNextActionPerformed
 
@@ -550,9 +570,27 @@ public class CoursesFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (currentPage > 0) {
             currentPage--;
-            updateUI();
+            updateUI(courses);
         }
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        new GoodbyeFrame().setVisible(true);
+    }//GEN-LAST:event_jLabel5MouseClicked
+
+    private void btnsearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnsearchMouseClicked
+        // TODO add your handling code here:
+        String searchContent = txtsearchbar.getText();
+        ArrayList<Course> getCourse = khoaHocDAO.loadCourseFromDatabase(searchContent);
+        if (getCourse.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Khong tim thay gi het!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Da tim thay !");
+            updateUI(getCourse);
+        }
+    }//GEN-LAST:event_btnsearchMouseClicked
 
     /**
      * @param args the command line arguments
@@ -595,8 +633,10 @@ public class CoursesFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnNext;
+    private javax.swing.JButton btnsearch;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
@@ -622,7 +662,6 @@ public class CoursesFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private com.k33ptoo.components.KButton kButton1;
     private javax.swing.JLabel lbavatar;
     private javax.swing.JLabel lbcourse1;
     private javax.swing.JLabel lbcourse2;
@@ -646,6 +685,7 @@ public class CoursesFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtprice2;
     private javax.swing.JTextField txtprice3;
     private javax.swing.JLabel txtrole;
+    private javax.swing.JTextField txtsearchbar;
     private javax.swing.JTextField txtstatus1;
     private javax.swing.JTextField txtstatus2;
     private javax.swing.JTextField txtstatus3;

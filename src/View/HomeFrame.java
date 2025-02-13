@@ -40,13 +40,13 @@ public class HomeFrame extends javax.swing.JFrame {
     private ChuyenDeDAO chuyenDeDAO = new ChuyenDeDAO();
     private ArrayList<ChuyenDe> list = chuyenDeDAO.getListChuyenDe();
     private static HomeFrame instance;
-
+    
     private ArrayList<Topic> topics = chuyenDeDAO.loadTopicsFromDatabase();
     private int currentPage = 0;
     private final int ITEMS_PER_PAGE = 4;
-
+    
     public HomeFrame() {
-
+        
         initComponents();
         updateUI();
         loadUserData();
@@ -59,16 +59,16 @@ public class HomeFrame extends javax.swing.JFrame {
         test1.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 20));
         lbtitle1.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 13));
         lbdescription1.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 12));
-
+        
         lbtitle2.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 13));
         lbdescription2.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 12));
-
+        
         lbtitle3.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 13));
         lbdescription3.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 12));
-
+        
         lbtitle4.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 13));
         lbdescription4.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 12));
-
+        
         date.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 14));
         txtcourses.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 16));
         txtcalendar.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 20));
@@ -79,23 +79,23 @@ public class HomeFrame extends javax.swing.JFrame {
         SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM", Locale.ENGLISH);
         SimpleDateFormat dayFormat = new SimpleDateFormat("d");
         SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
-
+        
         String month = monthFormat.format(d);
         int day = Integer.parseInt(dayFormat.format(d));
         String year = yearFormat.format(d);
-
+        
         String suffix = "th";
         String formattedDate = month + " " + day + suffix + ", " + year;
-
+        
         date.setText(formattedDate);
         System.out.println(formattedDate);
     }
-
+    
     private void loadUserData() {
         String username = UserSession.getUsername();
         String role = UserSession.getRole();
         String gioiTinh = UserSession.getGioiTinh();
-
+        
         txtusername.setText(username);
         txtrole.setText(role);
         setAvatar(gioiTinh);
@@ -104,14 +104,14 @@ public class HomeFrame extends javax.swing.JFrame {
             return;
         }
     }
-
+    
     public static HomeFrame getInstance() {
         if (instance == null) {
             instance = new HomeFrame();
         }
         return instance;
     }
-
+    
     private void loadFont(String fontName, String path) {
         try (InputStream fontStream = getClass().getResourceAsStream(path)) {
             if (fontStream == null) {
@@ -125,7 +125,7 @@ public class HomeFrame extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-
+    
     private Font getCustomFont(String fontName, int style, float size) {
         Font baseFont = fontCache.get(fontName);
         return (baseFont != null) ? baseFont.deriveFont(style, size) : new Font("SansSerif", style, (int) size);
@@ -139,13 +139,13 @@ public class HomeFrame extends javax.swing.JFrame {
             System.out.println(font);
         }
     }
-
+    
     private void updateUI() {
         int start = currentPage * ITEMS_PER_PAGE;
         JLabel[] titleLabels = {lbtitle1, lbtitle2, lbtitle3, lbtitle4};
         JLabel[] descLabels = {lbdescription1, lbdescription2, lbdescription3, lbdescription4};
         JLabel[] iconLabels = {lbicon1, lbicon2, lbicon3, lbicon4};
-
+        
         for (int i = 0; i < ITEMS_PER_PAGE; i++) {
             int index = start + i;
             if (index < topics.size()) {
@@ -164,9 +164,9 @@ public class HomeFrame extends javax.swing.JFrame {
                 iconLabels[i].setIcon(null);
             }
         }
-
+        
     }
-
+    
     private void setAvatar(String gioiTinh) {
         String imagePath = "";
         if (gioiTinh.equals("Nam")) {
@@ -305,6 +305,11 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Logout-unclick-btn.png"))); // NOI18N
         jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel5MouseClicked(evt);
+            }
+        });
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, -1, -1));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Web-full-container.png"))); // NOI18N
@@ -432,6 +437,12 @@ public class HomeFrame extends javax.swing.JFrame {
         prCoursesFrame.setVisible(true);
     }//GEN-LAST:event_jLabel1MouseClicked
 
+    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        new GoodbyeFrame().setVisible(true);
+    }//GEN-LAST:event_jLabel5MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -446,21 +457,21 @@ public class HomeFrame extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-
+                    
                 }
             }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(HomeFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
+            
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(HomeFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
+            
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(HomeFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
+            
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(HomeFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
@@ -470,7 +481,7 @@ public class HomeFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-
+                
                 new HomeFrame().setVisible(true);
             }
         });

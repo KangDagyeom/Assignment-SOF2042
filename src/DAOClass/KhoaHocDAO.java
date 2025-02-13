@@ -91,4 +91,29 @@ public class KhoaHocDAO {
         return courses;
     }
 
+    public ArrayList<Course> loadCourseFromDatabase(String content) {
+        ArrayList<Course> course = new ArrayList<>();
+        try (Connection conn = getConnect(); PreparedStatement stmt = conn.prepareStatement(
+                "SELECT MaKhoaHoc, TenKhoaHoc, MoTa, HinhKhoaHoc, HocPhi, TrangThai FROM KhoaHoc WHERE TenKhoaHoc LIKE ?"
+        )) {
+            stmt.setString(1, "%" + content + "%");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    course.add(new Course(
+                            rs.getString("MaKhoaHoc"),
+                            rs.getString("TenKhoaHoc"),
+                            rs.getString("MoTa"),
+                            rs.getString("HinhKhoaHoc"),
+                            rs.getDouble("HocPhi"),
+                            rs.getString("TrangThai")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return course;
+    }
+
 }
