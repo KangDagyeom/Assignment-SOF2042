@@ -11,6 +11,8 @@ import DAOClass.UserSession;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,12 +37,16 @@ public class CoursesFrame extends javax.swing.JFrame {
     private Map<String, Font> fontCache = new HashMap<>();
     private KhoaHocDAO khoaHocDAO = new KhoaHocDAO();
     private ArrayList<Course> courses = khoaHocDAO.loadCoursesFromDatabase();
+    private ArrayList<Course> displayedCourses = new ArrayList<>();
+
     private int currentPage = 0;
     private final int ITEMS_PER_PAGE = 3;
 
     public CoursesFrame() {
         initComponents();
-        updateUI(courses);
+        displayedCourses = courses;
+        updateUI(displayedCourses);
+
         loadFont("Poppins-SemiBold", "/fonts/FZ Poppins-SemiBold.ttf");
         loadFont("Poppins-Regular", "/fonts/FZ Poppins-Regular.ttf");
         txtusername.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 16));
@@ -139,7 +145,7 @@ public class CoursesFrame extends javax.swing.JFrame {
                 des[i].setText(null);
                 price[i].setText(null);
                 status[i].setText(null);
-                ImageIcon icon = new ImageIcon("C:\\Users\\Administrator\\Desktop\\Assignment-SOF2042\\src\\Resources\\Unknow-icon.png");
+                ImageIcon icon = new ImageIcon("C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Unknow-icon.png");
                 iconLabels[i].setIcon(icon);
             }
         }
@@ -155,6 +161,7 @@ public class CoursesFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        btndetails3 = new javax.swing.JButton();
         lbpr3 = new javax.swing.JLabel();
         lbpr2 = new javax.swing.JLabel();
         lbpr1 = new javax.swing.JLabel();
@@ -176,7 +183,7 @@ public class CoursesFrame extends javax.swing.JFrame {
         txtstatus1 = new javax.swing.JTextField();
         txtcode1 = new javax.swing.JTextField();
         txtprice1 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        btndetails2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtdes1 = new javax.swing.JTextArea();
         lbcourse3 = new javax.swing.JLabel();
@@ -192,6 +199,8 @@ public class CoursesFrame extends javax.swing.JFrame {
         txtstatus3 = new javax.swing.JTextField();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        btndetails1 = new javax.swing.JButton();
         lbpr3container = new javax.swing.JLabel();
         lbpr1container = new javax.swing.JLabel();
         lbcourse2 = new javax.swing.JLabel();
@@ -213,6 +222,7 @@ public class CoursesFrame extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         txtsearchbar = new javax.swing.JTextField();
         btnsearch = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Coursera");
@@ -220,6 +230,11 @@ public class CoursesFrame extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btndetails3.setBackground(new java.awt.Color(255, 255, 255));
+        btndetails3.setForeground(new java.awt.Color(0, 0, 0));
+        btndetails3.setText("Details");
+        jPanel1.add(btndetails3, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 510, -1, -1));
         jPanel1.add(lbpr3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 450, -1, -1));
         jPanel1.add(lbpr2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 280, -1, -1));
         jPanel1.add(lbpr1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 110, -1, -1));
@@ -314,10 +329,10 @@ public class CoursesFrame extends javax.swing.JFrame {
         });
         jPanel1.add(txtprice1, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 110, 120, -1));
 
-        jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setForeground(new java.awt.Color(0, 0, 0));
-        jButton2.setText("Remove");
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 140, -1, -1));
+        btndetails2.setBackground(new java.awt.Color(255, 255, 255));
+        btndetails2.setForeground(new java.awt.Color(0, 0, 0));
+        btndetails2.setText("Details");
+        jPanel1.add(btndetails2, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 340, -1, -1));
 
         txtdes1.setBackground(new java.awt.Color(255, 255, 255));
         txtdes1.setColumns(20);
@@ -394,6 +409,16 @@ public class CoursesFrame extends javax.swing.JFrame {
         jButton7.setForeground(new java.awt.Color(0, 0, 0));
         jButton7.setText("Remove");
         jPanel1.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 480, -1, -1));
+
+        jButton8.setBackground(new java.awt.Color(255, 255, 255));
+        jButton8.setForeground(new java.awt.Color(0, 0, 0));
+        jButton8.setText("Remove");
+        jPanel1.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 140, -1, -1));
+
+        btndetails1.setBackground(new java.awt.Color(255, 255, 255));
+        btndetails1.setForeground(new java.awt.Color(0, 0, 0));
+        btndetails1.setText("Details");
+        jPanel1.add(btndetails1, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 170, -1, -1));
 
         lbpr3container.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Pr-Course3-container.png"))); // NOI18N
         jPanel1.add(lbpr3container, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 430, -1, -1));
@@ -489,6 +514,15 @@ public class CoursesFrame extends javax.swing.JFrame {
 
         jButton3.setText("Inert course, topic");
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 50, -1, -1));
+
+        txtsearchbar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtsearchbarMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                txtsearchbarMouseExited(evt);
+            }
+        });
         jPanel1.add(txtsearchbar, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 50, 200, -1));
 
         btnsearch.setText("Search");
@@ -498,6 +532,10 @@ public class CoursesFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnsearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 50, -1, -1));
+
+        jLabel13.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel13.setText("*Empty value will get courses");
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 30, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -560,9 +598,9 @@ public class CoursesFrame extends javax.swing.JFrame {
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
-        if ((currentPage + 1) * ITEMS_PER_PAGE < courses.size()) {
+        if ((currentPage + 1) * ITEMS_PER_PAGE < displayedCourses.size()) {
             currentPage++;
-            updateUI(courses);
+            updateUI(displayedCourses);
         }
     }//GEN-LAST:event_btnNextActionPerformed
 
@@ -570,7 +608,7 @@ public class CoursesFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (currentPage > 0) {
             currentPage--;
-            updateUI(courses);
+            updateUI(displayedCourses);
         }
     }//GEN-LAST:event_btnBackActionPerformed
 
@@ -581,16 +619,30 @@ public class CoursesFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void btnsearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnsearchMouseClicked
-        // TODO add your handling code here:
+
         String searchContent = txtsearchbar.getText();
         ArrayList<Course> getCourse = khoaHocDAO.loadCourseFromDatabase(searchContent);
+
         if (getCourse.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Khong tim thay gi het!");
+            JOptionPane.showMessageDialog(this, "Không tìm thấy kết quả!");
         } else {
-            JOptionPane.showMessageDialog(this, "Da tim thay !");
-            updateUI(getCourse);
+            JOptionPane.showMessageDialog(this, "Đã tìm thấy!");
+            displayedCourses = getCourse;
+            currentPage = 0;
+            updateUI(displayedCourses);
         }
+
+
     }//GEN-LAST:event_btnsearchMouseClicked
+
+    private void txtsearchbarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtsearchbarMouseClicked
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_txtsearchbarMouseClicked
+
+    private void txtsearchbarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtsearchbarMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtsearchbarMouseExited
 
     /**
      * @param args the command line arguments
@@ -606,16 +658,24 @@ public class CoursesFrame extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CoursesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CoursesFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CoursesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CoursesFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CoursesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CoursesFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CoursesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CoursesFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -633,18 +693,22 @@ public class CoursesFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnNext;
+    private javax.swing.JButton btndetails1;
+    private javax.swing.JButton btndetails2;
+    private javax.swing.JButton btndetails3;
     private javax.swing.JButton btnsearch;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
