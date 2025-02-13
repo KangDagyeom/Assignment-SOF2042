@@ -11,8 +11,10 @@ import DAOClass.UserSession;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,10 +22,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import org.w3c.dom.events.MouseEvent;
 
 /**
  *
@@ -38,12 +44,16 @@ public class CoursesFrame extends javax.swing.JFrame {
     private KhoaHocDAO khoaHocDAO = new KhoaHocDAO();
     private ArrayList<Course> courses = khoaHocDAO.loadCoursesFromDatabase();
     private ArrayList<Course> displayedCourses = new ArrayList<>();
-
+    private String imagePath = "";
     private int currentPage = 0;
     private final int ITEMS_PER_PAGE = 3;
 
     public CoursesFrame() {
         initComponents();
+        btndel1.setName("del1");
+        btndel2.setName("del2");
+        btndel3.setName("del3");
+
         displayedCourses = courses;
         updateUI(displayedCourses);
 
@@ -52,6 +62,12 @@ public class CoursesFrame extends javax.swing.JFrame {
         txtusername.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 16));
         txtrole.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 14));
         loadUserData();
+        btnUpdate1.addActionListener(e -> handleUpdateAction(btnUpdate1));
+        btnUpdate2.addActionListener(e -> handleUpdateAction(btnUpdate2));
+        btnUpdate3.addActionListener(e -> handleUpdateAction(btnUpdate3));
+        btndel1.addActionListener(e -> handleDeleteCourse(btndel1));
+        btndel2.addActionListener(e -> handleDeleteCourse(btndel2));
+        btndel3.addActionListener(e -> handleDeleteCourse(btndel3));
 
     }
 
@@ -179,7 +195,7 @@ public class CoursesFrame extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         txtname1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnUpdate1 = new javax.swing.JButton();
         txtstatus1 = new javax.swing.JTextField();
         txtcode1 = new javax.swing.JTextField();
         txtprice1 = new javax.swing.JTextField();
@@ -197,9 +213,9 @@ public class CoursesFrame extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         txtstatus3 = new javax.swing.JTextField();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        btnUpdate3 = new javax.swing.JButton();
+        btndel3 = new javax.swing.JButton();
+        btndel1 = new javax.swing.JButton();
         btndetails1 = new javax.swing.JButton();
         lbpr3container = new javax.swing.JLabel();
         lbpr1container = new javax.swing.JLabel();
@@ -214,8 +230,8 @@ public class CoursesFrame extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         txtstatus2 = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnUpdate2 = new javax.swing.JButton();
+        btndel2 = new javax.swing.JButton();
         lbpr2container = new javax.swing.JLabel();
         btnNext = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
@@ -229,14 +245,35 @@ public class CoursesFrame extends javax.swing.JFrame {
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel1MouseClicked(evt);
+            }
+        });
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btndetails3.setBackground(new java.awt.Color(255, 255, 255));
         btndetails3.setForeground(new java.awt.Color(0, 0, 0));
         btndetails3.setText("Details");
         jPanel1.add(btndetails3, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 510, -1, -1));
+
+        lbpr3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lbpr3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbpr3MouseClicked(evt);
+            }
+        });
         jPanel1.add(lbpr3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 450, -1, -1));
+
+        lbpr2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lbpr2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbpr2MouseClicked(evt);
+            }
+        });
         jPanel1.add(lbpr2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 280, -1, -1));
+
+        lbpr1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel1.add(lbpr1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 110, -1, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/App-logo-homeview.png"))); // NOI18N
@@ -302,15 +339,15 @@ public class CoursesFrame extends javax.swing.JFrame {
         txtname1.setForeground(new java.awt.Color(0, 0, 0));
         jPanel1.add(txtname1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 140, 120, -1));
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setText("Update");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnUpdate1.setBackground(new java.awt.Color(255, 255, 255));
+        btnUpdate1.setForeground(new java.awt.Color(0, 0, 0));
+        btnUpdate1.setText("Update");
+        btnUpdate1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnUpdate1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 110, -1, -1));
+        jPanel1.add(btnUpdate1, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 110, -1, -1));
 
         txtstatus1.setBackground(new java.awt.Color(255, 255, 255));
         txtstatus1.setForeground(new java.awt.Color(0, 0, 0));
@@ -395,25 +432,25 @@ public class CoursesFrame extends javax.swing.JFrame {
         txtstatus3.setForeground(new java.awt.Color(0, 0, 0));
         jPanel1.add(txtstatus3, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 480, 120, -1));
 
-        jButton6.setBackground(new java.awt.Color(255, 255, 255));
-        jButton6.setForeground(new java.awt.Color(0, 0, 0));
-        jButton6.setText("Update");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        btnUpdate3.setBackground(new java.awt.Color(255, 255, 255));
+        btnUpdate3.setForeground(new java.awt.Color(0, 0, 0));
+        btnUpdate3.setText("Update");
+        btnUpdate3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                btnUpdate3ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 450, -1, -1));
+        jPanel1.add(btnUpdate3, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 450, -1, -1));
 
-        jButton7.setBackground(new java.awt.Color(255, 255, 255));
-        jButton7.setForeground(new java.awt.Color(0, 0, 0));
-        jButton7.setText("Remove");
-        jPanel1.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 480, -1, -1));
+        btndel3.setBackground(new java.awt.Color(255, 255, 255));
+        btndel3.setForeground(new java.awt.Color(0, 0, 0));
+        btndel3.setText("Remove");
+        jPanel1.add(btndel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 480, -1, -1));
 
-        jButton8.setBackground(new java.awt.Color(255, 255, 255));
-        jButton8.setForeground(new java.awt.Color(0, 0, 0));
-        jButton8.setText("Remove");
-        jPanel1.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 140, -1, -1));
+        btndel1.setBackground(new java.awt.Color(255, 255, 255));
+        btndel1.setForeground(new java.awt.Color(0, 0, 0));
+        btndel1.setText("Remove");
+        jPanel1.add(btndel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 140, -1, -1));
 
         btndetails1.setBackground(new java.awt.Color(255, 255, 255));
         btndetails1.setForeground(new java.awt.Color(0, 0, 0));
@@ -478,20 +515,20 @@ public class CoursesFrame extends javax.swing.JFrame {
         txtstatus2.setForeground(new java.awt.Color(0, 0, 0));
         jPanel1.add(txtstatus2, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 310, 120, -1));
 
-        jButton4.setBackground(new java.awt.Color(255, 255, 255));
-        jButton4.setForeground(new java.awt.Color(0, 0, 0));
-        jButton4.setText("Update");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnUpdate2.setBackground(new java.awt.Color(255, 255, 255));
+        btnUpdate2.setForeground(new java.awt.Color(0, 0, 0));
+        btnUpdate2.setText("Update");
+        btnUpdate2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnUpdate2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 280, -1, -1));
+        jPanel1.add(btnUpdate2, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 280, -1, -1));
 
-        jButton5.setBackground(new java.awt.Color(255, 255, 255));
-        jButton5.setForeground(new java.awt.Color(0, 0, 0));
-        jButton5.setText("Remove");
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 310, -1, -1));
+        btndel2.setBackground(new java.awt.Color(255, 255, 255));
+        btndel2.setForeground(new java.awt.Color(0, 0, 0));
+        btndel2.setText("Remove");
+        jPanel1.add(btndel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 310, -1, -1));
 
         lbpr2container.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Pr-Course2-container.png"))); // NOI18N
         jPanel1.add(lbpr2container, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 260, -1, -1));
@@ -534,7 +571,7 @@ public class CoursesFrame extends javax.swing.JFrame {
         jPanel1.add(btnsearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 50, -1, -1));
 
         jLabel13.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel13.setText("*Empty value will get courses");
+        jLabel13.setText("*Empty value will display default");
         jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 30, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -572,25 +609,26 @@ public class CoursesFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtprice1ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnUpdate1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdate1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+
+    }//GEN-LAST:event_btnUpdate1ActionPerformed
 
     private void txtprice2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtprice2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtprice2ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnUpdate2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdate2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btnUpdate2ActionPerformed
 
     private void txtprice3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtprice3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtprice3ActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void btnUpdate3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdate3ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_btnUpdate3ActionPerformed
 
     private void kButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton1ActionPerformed
         // TODO add your handling code here:
@@ -634,7 +672,68 @@ public class CoursesFrame extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btnsearchMouseClicked
+    private void handleUpdateAction(JButton button) {
+        // Lấy dữ liệu từ các ô nhập liệu trong cùng một panel
 
+        // Lấy giá trị nhập vào
+        String maKhoaHoc = txtcode1.getText();
+        String tenKhoaHoc = txtname1.getText();
+        String moTa = txtdes1.getText();
+        String hinhKhoaHoc = imagePath;
+        Double hocPhi = Double.parseDouble(txtprice1.getText());
+        String trangThai = txtstatus1.getText();
+
+        // Gọi phương thức cập nhật
+        int result = khoaHocDAO.updateKhoaHoc(maKhoaHoc, tenKhoaHoc, moTa, hinhKhoaHoc, hocPhi, trangThai, maKhoaHoc);
+        if (result > 0) {
+            JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
+            updateUI(courses);
+        } else {
+            JOptionPane.showMessageDialog(this, "Cập nhật thất bại!");
+        }
+    }
+
+    private String handleSetCourseImg(JLabel jLabel) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int result = fileChooser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            ImageIcon imageIcon = new ImageIcon(file.getAbsolutePath());
+            imagePath = file.getAbsolutePath();
+            System.out.println("Đường dẫn ảnh: " + imagePath);
+            int originalWidth = imageIcon.getIconWidth();
+            int originalHeight = imageIcon.getIconHeight();
+            Image image = imageIcon.getImage().getScaledInstance(originalWidth, originalHeight, Image.SCALE_SMOOTH);
+            jLabel.setIcon(new ImageIcon(image));
+        } else {
+            System.out.println("Surely its dead");
+        }
+        return imagePath;
+    }
+
+    private void handleDeleteCourse(JButton jButton) {
+        String maKhoaHoc = "";
+        if (jButton.getName().contains("1")) {
+            maKhoaHoc = txtcode1.getText();
+        } else if (jButton.getName().contains("2")) {
+            maKhoaHoc = txtcode2.getText();
+        } else {
+            maKhoaHoc = txtcode3.getText();
+        }
+
+        int result = khoaHocDAO.deleteKhoaHoc(maKhoaHoc);
+        if (result > 0) {
+            JOptionPane.showMessageDialog(this, "Xóa thành công!");
+            courses = khoaHocDAO.loadCoursesFromDatabase();
+            updateUI(courses);
+            revalidate();
+            repaint();
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Xóa thất bại!");
+        }
+    }
     private void txtsearchbarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtsearchbarMouseClicked
         // TODO add your handling code here:
 
@@ -643,6 +742,21 @@ public class CoursesFrame extends javax.swing.JFrame {
     private void txtsearchbarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtsearchbarMouseExited
         // TODO add your handling code here:
     }//GEN-LAST:event_txtsearchbarMouseExited
+
+    private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
+        // TODO add your handling code here:
+        handleSetCourseImg(lbpr1);
+    }//GEN-LAST:event_jPanel1MouseClicked
+
+    private void lbpr2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbpr2MouseClicked
+        // TODO add your handling code here:
+        handleSetCourseImg(lbpr2);
+    }//GEN-LAST:event_lbpr2MouseClicked
+
+    private void lbpr3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbpr3MouseClicked
+        // TODO add your handling code here:
+        handleSetCourseImg(lbpr3);
+    }//GEN-LAST:event_lbpr3MouseClicked
 
     /**
      * @param args the command line arguments
@@ -693,17 +807,17 @@ public class CoursesFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnNext;
+    private javax.swing.JButton btnUpdate1;
+    private javax.swing.JButton btnUpdate2;
+    private javax.swing.JButton btnUpdate3;
+    private javax.swing.JButton btndel1;
+    private javax.swing.JButton btndel2;
+    private javax.swing.JButton btndel3;
     private javax.swing.JButton btndetails1;
     private javax.swing.JButton btndetails2;
     private javax.swing.JButton btndetails3;
     private javax.swing.JButton btnsearch;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

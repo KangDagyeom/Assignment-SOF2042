@@ -116,4 +116,15 @@ public class KhoaHocDAO {
         return course;
     }
 
+    public int updateKhoaHoc(String maKhoaHocMoi, String tenKhoaHoc, String moTa, String hinhKhoaHoc, Double hocPhi, String trangThai, String maKhoaHocCu) {
+        String query = "UPDATE KhoaHoc SET MaKhoaHoc = ?, TenKhoaHoc = ?, MoTa = ?, HinhKhoaHoc = ?, HocPhi = ?, TrangThai = ? WHERE MaKhoaHoc = ?";
+        Object[] params = {maKhoaHocMoi, tenKhoaHoc, moTa, hinhKhoaHoc, hocPhi, trangThai, maKhoaHocCu};
+        return executeUpdate(query, params);
+    }
+
+    public int deleteKhoaHoc(String maKhoaHoc) {
+        String query = "DELETE FROM KhoaHoc WHERE MaKhoaHoc = ?";
+        return executeUpdate(query, maKhoaHoc);
+    }
+
 }
