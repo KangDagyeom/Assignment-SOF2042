@@ -4,6 +4,16 @@
  */
 package View;
 
+import DAOClass.Course;
+import DAOClass.KhoaHocDAO;
+import java.awt.Image;
+import java.io.File;
+import java.util.ArrayList;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Hyun
@@ -13,8 +23,12 @@ public class InsertCourseFrame extends javax.swing.JFrame {
     /**
      * Creates new form CourseFrame
      */
+    private KhoaHocDAO khoaHocDAO = new KhoaHocDAO();
+    private String imagePath = "";
+    
     public InsertCourseFrame() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -26,6 +40,7 @@ public class InsertCourseFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jInternalFrame1 = new javax.swing.JInternalFrame();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -36,7 +51,36 @@ public class InsertCourseFrame extends javax.swing.JFrame {
         lbavatar = new javax.swing.JLabel();
         txtrole = new javax.swing.JLabel();
         txtusername = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        txtcoursecode = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        txtcoursename = new javax.swing.JTextField();
+        txtcoursefee = new javax.swing.JTextField();
+        txtcoursestatus = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtcoursedesc = new javax.swing.JTextArea();
+        jLabel11 = new javax.swing.JLabel();
+        lbcourseimg = new javax.swing.JLabel();
+        btnupload = new javax.swing.JButton();
+        btninsertcourse = new javax.swing.JButton();
         lbtopiccontainer = new javax.swing.JLabel();
+
+        jInternalFrame1.setVisible(true);
+
+        javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
+        jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
+        jInternalFrame1Layout.setHorizontalGroup(
+            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jInternalFrame1Layout.setVerticalGroup(
+            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,16 +90,16 @@ public class InsertCourseFrame extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/App-logo-homeview.png"))); // NOI18N
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 28, -1, -1));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Courses-unclick-btn.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Courses-clicked-btn.png"))); // NOI18N
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel1MouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, -1, -1));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Performance-clicked-btn.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Performance-unclick-btn.png"))); // NOI18N
         jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, -1, -1));
 
@@ -85,6 +129,133 @@ public class InsertCourseFrame extends javax.swing.JFrame {
         txtusername.setForeground(new java.awt.Color(0, 0, 0));
         txtusername.setText("Username");
         jPanel1.add(txtusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 20, -1, -1));
+
+        jPanel2.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel2.setOpaque(false);
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel8.setText("Status:");
+
+        txtcoursecode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtcoursecodeActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel9.setText("Description:");
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel7.setText("Price:");
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel6.setText("Course name:");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setText("Course code:");
+
+        txtcoursedesc.setColumns(20);
+        txtcoursedesc.setLineWrap(true);
+        txtcoursedesc.setRows(5);
+        txtcoursedesc.setWrapStyleWord(true);
+        jScrollPane1.setViewportView(txtcoursedesc);
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel11.setText("Course Image");
+
+        lbcourseimg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Empty-img.png"))); // NOI18N
+
+        btnupload.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnupload.setText("Upload");
+        btnupload.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnupload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnuploadActionPerformed(evt);
+            }
+        });
+
+        btninsertcourse.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btninsertcourse.setText("Insert course");
+        btninsertcourse.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btninsertcourse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btninsertcourseActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbcourseimg)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGap(70, 70, 70)
+                                        .addComponent(btnupload))))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(86, 86, 86)
+                                .addComponent(jLabel11)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel9))
+                        .addGap(39, 39, 39)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtcoursecode, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtcoursefee, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtcoursename, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtcoursestatus, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(250, 250, 250)
+                        .addComponent(btninsertcourse)))
+                .addGap(53, 53, 53))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(58, 58, 58)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtcoursecode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel11))
+                .addGap(10, 10, 10)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(lbcourseimg)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnupload))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(txtcoursename, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(16, 16, 16)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(txtcoursefee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(txtcoursestatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(btninsertcourse, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51))
+        );
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 110, 640, 480));
 
         lbtopiccontainer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Topics-courses-container.png"))); // NOI18N
         jPanel1.add(lbtopiccontainer, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 100, -1, -1));
@@ -126,6 +297,48 @@ public class InsertCourseFrame extends javax.swing.JFrame {
         new GoodbyeFrame().setVisible(true);
     }//GEN-LAST:event_jLabel5MouseClicked
 
+    private void txtcoursecodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcoursecodeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtcoursecodeActionPerformed
+
+    private void btninsertcourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btninsertcourseActionPerformed
+        // TODO add your handling code here:
+        String courseCode = txtcoursecode.getText();
+        String courseName = txtcoursename.getText();
+        Double price = Double.parseDouble(txtcoursefee.getText());
+        String status = txtcoursestatus.getText();
+        String desc = txtcoursedesc.getText();
+        String courseImg = imagePath;
+        int result = khoaHocDAO.insertKhoaHoc(courseCode, courseName, desc, courseImg, price, status);
+        if (result > 0) {
+            JOptionPane.showMessageDialog(this, "Thêm khóa học thành công!");
+            
+        } else {
+            JOptionPane.showMessageDialog(this, "Thêm thất bại thất bại!");
+        }
+    }//GEN-LAST:event_btninsertcourseActionPerformed
+
+    private void btnuploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnuploadActionPerformed
+        // TODO add your handling code here:
+        handleCourseImg(lbcourseimg);
+    }//GEN-LAST:event_btnuploadActionPerformed
+    private void handleCourseImg(JLabel jLabel) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int result = fileChooser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            imagePath = file.getAbsolutePath();
+            System.out.println("Đường dẫn ảnh: " + imagePath);
+            
+            ImageIcon imageIcon = new ImageIcon(imagePath);
+            Image image = imageIcon.getImage().getScaledInstance(230, 232, Image.SCALE_SMOOTH);
+            jLabel.setIcon(new ImageIcon(image));
+        } else {
+            System.out.println("Không chọn ảnh.");
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -163,15 +376,32 @@ public class InsertCourseFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btninsertcourse;
+    private javax.swing.JButton btnupload;
+    private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbavatar;
+    private javax.swing.JLabel lbcourseimg;
     private javax.swing.JLabel lbtopiccontainer;
     private javax.swing.JLabel test1;
+    private javax.swing.JTextField txtcoursecode;
+    private javax.swing.JTextArea txtcoursedesc;
+    private javax.swing.JTextField txtcoursefee;
+    private javax.swing.JTextField txtcoursename;
+    private javax.swing.JTextField txtcoursestatus;
     private javax.swing.JLabel txtrole;
     private javax.swing.JLabel txtusername;
     // End of variables declaration//GEN-END:variables

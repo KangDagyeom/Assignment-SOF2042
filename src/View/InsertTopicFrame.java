@@ -15,6 +15,7 @@ public class InsertTopicFrame extends javax.swing.JFrame {
      */
     public InsertTopicFrame() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**

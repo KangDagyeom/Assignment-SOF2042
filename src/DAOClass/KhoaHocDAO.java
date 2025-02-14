@@ -127,4 +127,16 @@ public class KhoaHocDAO {
         return executeUpdate(query, maKhoaHoc);
     }
 
+    public int insertKhoaHoc(String maKhoaHoc, String tenKhoaHoc, String moTa, String hinhKhoaHoc, Double hocPhi, String trangThai) {
+        String query = "INSERT INTO KhoaHoc (MaKhoaHoc, TenKhoaHoc, MoTa, HinhKhoaHoc, HocPhi, TrangThai) VALUES (?,?,?,?,?,?)";
+        return executeUpdate(query,
+                maKhoaHoc,
+                tenKhoaHoc,
+                moTa,
+                hinhKhoaHoc,
+                hocPhi,
+                trangThai
+        );
+    }
+
 }

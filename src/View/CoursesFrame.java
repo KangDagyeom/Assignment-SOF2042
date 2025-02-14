@@ -47,16 +47,17 @@ public class CoursesFrame extends javax.swing.JFrame {
     private String imagePath = "";
     private int currentPage = 0;
     private final int ITEMS_PER_PAGE = 3;
-
+    
     public CoursesFrame() {
         initComponents();
+        this.setLocationRelativeTo(null);
         btndel1.setName("del1");
         btndel2.setName("del2");
         btndel3.setName("del3");
-
+        
         displayedCourses = courses;
         updateUI(displayedCourses);
-
+        
         loadFont("Poppins-SemiBold", "/fonts/FZ Poppins-SemiBold.ttf");
         loadFont("Poppins-Regular", "/fonts/FZ Poppins-Regular.ttf");
         txtusername.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 16));
@@ -68,9 +69,9 @@ public class CoursesFrame extends javax.swing.JFrame {
         btndel1.addActionListener(e -> handleDeleteCourse(btndel1));
         btndel2.addActionListener(e -> handleDeleteCourse(btndel2));
         btndel3.addActionListener(e -> handleDeleteCourse(btndel3));
-
+        
     }
-
+    
     private void loadFont(String fontName, String path) {
         try (InputStream fontStream = getClass().getResourceAsStream(path)) {
             if (fontStream == null) {
@@ -84,17 +85,17 @@ public class CoursesFrame extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-
+    
     private Font getCustomFont(String fontName, int style, float size) {
         Font baseFont = fontCache.get(fontName);
         return (baseFont != null) ? baseFont.deriveFont(style, size) : new Font("SansSerif", style, (int) size);
     }
-
+    
     private void loadUserData() {
         String username = UserSession.getUsername();
         String role = UserSession.getRole();
         String gioiTinh = UserSession.getGioiTinh();
-
+        
         txtusername.setText(username);
         txtrole.setText(role);
         setAvatar(gioiTinh);
@@ -103,7 +104,7 @@ public class CoursesFrame extends javax.swing.JFrame {
             return;
         }
     }
-
+    
     private void setAvatar(String gioiTinh) {
         String imagePath = "";
         if (gioiTinh.equals("Nam")) {
@@ -122,7 +123,7 @@ public class CoursesFrame extends javax.swing.JFrame {
             System.out.println("⚠ Lỗi: Không tìm thấy hình ảnh tại " + imagePath);
         }
     }
-
+    
     private void updateUI(ArrayList<Course> allCourses) {
         int start = currentPage * ITEMS_PER_PAGE;
         JTextField[] code = {txtcode1, txtcode2, txtcode3};
@@ -131,7 +132,7 @@ public class CoursesFrame extends javax.swing.JFrame {
         JTextArea[] des = {txtdes1, txtdes2, txtdes3};
         JTextField[] status = {txtstatus1, txtstatus2, txtstatus3};
         JLabel[] iconLabels = {lbpr1, lbpr2, lbpr3};
-
+        
         for (int i = 0; i < ITEMS_PER_PAGE; i++) {
             int index = start + i;
             if (index < allCourses.size()) {
@@ -143,7 +144,7 @@ public class CoursesFrame extends javax.swing.JFrame {
                 status[i].setText(course.getTrangThai());
                 ImageIcon icon = new ImageIcon(course.getHinhKhoaHoc());
                 iconLabels[i].setIcon(icon);
-
+                
                 code[i].setVisible(true);
                 name[i].setVisible(true);
                 des[i].setVisible(true);
@@ -550,6 +551,11 @@ public class CoursesFrame extends javax.swing.JFrame {
         jPanel1.add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 50, 60, -1));
 
         jButton3.setText("Inert course, topic");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 50, -1, -1));
 
         txtsearchbar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -657,10 +663,10 @@ public class CoursesFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void btnsearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnsearchMouseClicked
-
+        
         String searchContent = txtsearchbar.getText();
         ArrayList<Course> getCourse = khoaHocDAO.loadCourseFromDatabase(searchContent);
-
+        
         if (getCourse.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Không tìm thấy kết quả!");
         } else {
@@ -669,7 +675,7 @@ public class CoursesFrame extends javax.swing.JFrame {
             currentPage = 0;
             updateUI(displayedCourses);
         }
-
+        
 
     }//GEN-LAST:event_btnsearchMouseClicked
     private void handleUpdateAction(JButton button) {
@@ -692,7 +698,7 @@ public class CoursesFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Cập nhật thất bại!");
         }
     }
-
+    
     private String handleSetCourseImg(JLabel jLabel) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -711,7 +717,7 @@ public class CoursesFrame extends javax.swing.JFrame {
         }
         return imagePath;
     }
-
+    
     private void handleDeleteCourse(JButton jButton) {
         String maKhoaHoc = "";
         if (jButton.getName().contains("1")) {
@@ -721,7 +727,7 @@ public class CoursesFrame extends javax.swing.JFrame {
         } else {
             maKhoaHoc = txtcode3.getText();
         }
-
+        
         int result = khoaHocDAO.deleteKhoaHoc(maKhoaHoc);
         if (result > 0) {
             JOptionPane.showMessageDialog(this, "Xóa thành công!");
@@ -729,7 +735,7 @@ public class CoursesFrame extends javax.swing.JFrame {
             updateUI(courses);
             revalidate();
             repaint();
-
+            
         } else {
             JOptionPane.showMessageDialog(this, "Xóa thất bại!");
         }
@@ -758,6 +764,12 @@ public class CoursesFrame extends javax.swing.JFrame {
         handleSetCourseImg(lbpr3);
     }//GEN-LAST:event_lbpr3MouseClicked
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        new InsertCourseFrame().setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -772,21 +784,21 @@ public class CoursesFrame extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-
+                    
                 }
             }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(CoursesFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
+            
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(CoursesFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
+            
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(CoursesFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
+            
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(CoursesFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);

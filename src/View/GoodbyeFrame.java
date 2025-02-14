@@ -15,6 +15,7 @@ public class GoodbyeFrame extends javax.swing.JFrame {
      */
     public GoodbyeFrame() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**

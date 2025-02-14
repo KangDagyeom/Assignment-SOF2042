@@ -9,6 +9,7 @@ import DAOClass.UserSession;
 import Models.NhanVien;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -24,7 +25,10 @@ public class LoginFrame extends javax.swing.JFrame {
 
     public LoginFrame() {
         initComponents();
+        SwingUtilities.invokeLater(() -> {
 
+            this.setLocationRelativeTo(null);
+        });
     }
 
     /**
