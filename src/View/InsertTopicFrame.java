@@ -4,6 +4,14 @@
  */
 package View;
 
+import DAOClass.ChuyenDeDAO;
+import java.awt.Image;
+import java.io.File;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Hyun
@@ -13,6 +21,9 @@ public class InsertTopicFrame extends javax.swing.JFrame {
     /**
      * Creates new form TopicFrame
      */
+    private ChuyenDeDAO chuyenDeDAO = new ChuyenDeDAO();
+    private String imagePath = "";
+
     public InsertTopicFrame() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -37,6 +48,20 @@ public class InsertTopicFrame extends javax.swing.JFrame {
         lbavatar = new javax.swing.JLabel();
         txtrole = new javax.swing.JLabel();
         txtusername = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        txttopiccode = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        txttopicname = new javax.swing.JTextField();
+        txttopicfee = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txttopicdesc = new javax.swing.JTextArea();
+        jLabel11 = new javax.swing.JLabel();
+        lbtopicimg = new javax.swing.JLabel();
+        btnupload = new javax.swing.JButton();
+        btninsertcourse = new javax.swing.JButton();
         lbtopiccontainer = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -47,16 +72,16 @@ public class InsertTopicFrame extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/App-logo-homeview.png"))); // NOI18N
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 28, -1, -1));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Courses-unclick-btn.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Courses-clicked-btn.png"))); // NOI18N
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel1MouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, -1, -1));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Performance-clicked-btn.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Performance-unclick-btn.png"))); // NOI18N
         jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, -1, -1));
 
@@ -87,6 +112,129 @@ public class InsertTopicFrame extends javax.swing.JFrame {
         txtusername.setText("Username");
         jPanel1.add(txtusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 20, -1, -1));
 
+        jPanel2.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel2.setOpaque(false);
+
+        txttopiccode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txttopiccodeActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Description:");
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Price:");
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Topic name:");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Topic code:");
+
+        txttopicdesc.setColumns(20);
+        txttopicdesc.setLineWrap(true);
+        txttopicdesc.setRows(5);
+        txttopicdesc.setWrapStyleWord(true);
+        jScrollPane1.setViewportView(txttopicdesc);
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setText("Topic Image");
+
+        lbtopicimg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Empty-img.png"))); // NOI18N
+
+        btnupload.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnupload.setText("Upload");
+        btnupload.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnupload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnuploadActionPerformed(evt);
+            }
+        });
+
+        btninsertcourse.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btninsertcourse.setText("Insert topic");
+        btninsertcourse.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btninsertcourse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btninsertcourseActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbtopicimg)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGap(70, 70, 70)
+                                        .addComponent(btnupload))))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(86, 86, 86)
+                                .addComponent(jLabel11)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel9))
+                        .addGap(39, 39, 39)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txttopiccode, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txttopicfee, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txttopicname, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(254, 254, 254)
+                        .addComponent(btninsertcourse)))
+                .addGap(53, 53, 53))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(58, 58, 58)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txttopiccode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel11))
+                .addGap(10, 10, 10)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(lbtopicimg)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnupload))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(txttopicname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(16, 16, 16)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(txttopicfee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addComponent(btninsertcourse, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50))
+        );
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 110, 640, 480));
+
         lbtopiccontainer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Topics-courses-container.png"))); // NOI18N
         jPanel1.add(lbtopiccontainer, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 100, -1, -1));
 
@@ -113,6 +261,46 @@ public class InsertTopicFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btninsertcourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btninsertcourseActionPerformed
+        // TODO add your handling code here:
+        String topicCode = txttopiccode.getText();
+        String topicName = txttopicname.getText();
+        Double price = Double.parseDouble(txttopicfee.getText());
+        String desc = txttopicdesc.getText();
+        String topicImg = imagePath;
+        int result = chuyenDeDAO.insertChuyenDe(topicCode, topicName, topicImg, desc, price);
+        if (result > 0) {
+            JOptionPane.showMessageDialog(this, "Thêm chuyên đề thành công!");
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Thêm chuyên đề thất bại!");
+        }
+    }//GEN-LAST:event_btninsertcourseActionPerformed
+
+    private void btnuploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnuploadActionPerformed
+        // TODO add your handling code here:
+        handleTopicImg(lbtopicimg);
+    }//GEN-LAST:event_btnuploadActionPerformed
+    private void handleTopicImg(JLabel jLabel) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int result = fileChooser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            imagePath = file.getAbsolutePath();
+            System.out.println("Đường dẫn ảnh: " + imagePath);
+
+            ImageIcon imageIcon = new ImageIcon(imagePath);
+            Image image = imageIcon.getImage().getScaledInstance(230, 232, Image.SCALE_SMOOTH);
+            jLabel.setIcon(new ImageIcon(image));
+        } else {
+            System.out.println("Không chọn ảnh.");
+        }
+    }
+    private void txttopiccodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txttopiccodeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txttopiccodeActionPerformed
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         // TODO add your handling code here:
@@ -164,16 +352,30 @@ public class InsertTopicFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btninsertcourse;
+    private javax.swing.JButton btnupload;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbavatar;
     private javax.swing.JLabel lbtopiccontainer;
+    private javax.swing.JLabel lbtopicimg;
     private javax.swing.JLabel test1;
     private javax.swing.JLabel txtrole;
+    private javax.swing.JTextField txttopiccode;
+    private javax.swing.JTextArea txttopicdesc;
+    private javax.swing.JTextField txttopicfee;
+    private javax.swing.JTextField txttopicname;
     private javax.swing.JLabel txtusername;
     // End of variables declaration//GEN-END:variables
 }

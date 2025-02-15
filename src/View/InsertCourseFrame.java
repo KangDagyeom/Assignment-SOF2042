@@ -134,6 +134,7 @@ public class InsertCourseFrame extends javax.swing.JFrame {
         jPanel2.setOpaque(false);
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Status:");
 
         txtcoursecode.addActionListener(new java.awt.event.ActionListener() {
@@ -143,15 +144,19 @@ public class InsertCourseFrame extends javax.swing.JFrame {
         });
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Description:");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Price:");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Course name:");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Course code:");
 
         txtcoursedesc.setColumns(20);
@@ -161,6 +166,7 @@ public class InsertCourseFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(txtcoursedesc);
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Course Image");
 
         lbcourseimg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Empty-img.png"))); // NOI18N

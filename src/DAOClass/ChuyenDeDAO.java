@@ -89,4 +89,15 @@ public class ChuyenDeDAO {
         return topics;
     }
 
+    public int insertChuyenDe(String maChuyenDe, String tenChuyenDe, String hinhChuyenDe, String moTa, Double hocPhi) {
+        String query = "INSERT INTO ChuyenDe (MaChuyenDe, TenChuyenDe, HinhChuyenDe, MoTa, HocPhi) VALUES (?,?,?,?,?)";
+        return executeUpdate(query,
+                maChuyenDe,
+                tenChuyenDe,
+                hinhChuyenDe,
+                moTa,
+                hocPhi
+        );
+    }
+
 }
