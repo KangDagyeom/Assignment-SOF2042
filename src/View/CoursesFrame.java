@@ -240,6 +240,7 @@ public class CoursesFrame extends javax.swing.JFrame {
         txtsearchbar = new javax.swing.JTextField();
         btnsearch = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Coursera");
@@ -580,6 +581,14 @@ public class CoursesFrame extends javax.swing.JFrame {
         jLabel13.setText("*Empty value will display default");
         jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 30, -1, -1));
 
+        jButton1.setText("Nhan Vien");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 20, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -679,68 +688,103 @@ public class CoursesFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnsearchMouseClicked
     private void handleUpdateAction(JButton button) {
-        // Lấy dữ liệu từ các ô nhập liệu trong cùng một panel
+        String role = UserSession.getRole();
+        if (role.equals("Manager")) {
+            int start = currentPage * ITEMS_PER_PAGE;
+            JTextField[] code = {txtcode1, txtcode2, txtcode3};
+            JTextField[] name = {txtname1, txtname2, txtname3};
+            JTextField[] price = {txtprice1, txtprice2, txtprice3};
+            JTextArea[] des = {txtdes1, txtdes2, txtdes3};
+            JTextField[] status = {txtstatus1, txtstatus2, txtstatus3};
 
-        // Lấy giá trị nhập vào
-        String maKhoaHoc = txtcode1.getText();
-        String tenKhoaHoc = txtname1.getText();
-        String moTa = txtdes1.getText();
-        String hinhKhoaHoc = imagePath;
-        Double hocPhi = Double.parseDouble(txtprice1.getText());
-        String trangThai = txtstatus1.getText();
+            for (int i = 0; i < ITEMS_PER_PAGE; i++) {
+                int index = start + i;
+                if (index >= courses.size()) {
+                    break;
+                }
 
-        // Gọi phương thức cập nhật
-        int result = khoaHocDAO.updateKhoaHoc(maKhoaHoc, tenKhoaHoc, moTa, hinhKhoaHoc, hocPhi, trangThai, maKhoaHoc);
-        if (result > 0) {
-            JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
+                Course course = courses.get(index);
+                String maKhoaHoc = code[i].getText().trim();
+                String tenKhoaHoc = name[i].getText().trim();
+                String moTa = des[i].getText().trim();
+                String trangThai = status[i].getText().trim();
+                String hinhKhoaHoc = imagePath;
+
+                double hocPhi;
+                try {
+                    hocPhi = Double.parseDouble(price[i].getText().trim());
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(this, "Học phí không hợp lệ!");
+                    continue;
+                }
+
+                int result = khoaHocDAO.updateKhoaHoc(maKhoaHoc, tenKhoaHoc, moTa, hinhKhoaHoc, hocPhi, trangThai, maKhoaHoc);
+                if (result > 0) {
+                    JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Cập nhật thất bại!");
+                }
+            }
+
             courses = khoaHocDAO.loadCoursesFromDatabase();
             updateUI(courses);
             revalidate();
             repaint();
         } else {
-            JOptionPane.showMessageDialog(this, "Cập nhật thất bại!");
+            JOptionPane.showMessageDialog(this, "Xin loi, ban khong quyen han de thuc hien chuc nang nay !");
         }
     }
 
     private String handleSetCourseImg(JLabel jLabel) {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        int result = fileChooser.showOpenDialog(null);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            ImageIcon imageIcon = new ImageIcon(file.getAbsolutePath());
-            imagePath = file.getAbsolutePath();
-            System.out.println("Đường dẫn ảnh: " + imagePath);
-            int originalWidth = imageIcon.getIconWidth();
-            int originalHeight = imageIcon.getIconHeight();
-            Image image = imageIcon.getImage().getScaledInstance(originalWidth, originalHeight, Image.SCALE_SMOOTH);
-            jLabel.setIcon(new ImageIcon(image));
+        String role = UserSession.getRole();
+        if (role.equals("Manager")) {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            int result = fileChooser.showOpenDialog(null);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                ImageIcon imageIcon = new ImageIcon(file.getAbsolutePath());
+                imagePath = file.getAbsolutePath();
+                System.out.println("Đường dẫn ảnh: " + imagePath);
+                int originalWidth = imageIcon.getIconWidth();
+                int originalHeight = imageIcon.getIconHeight();
+                Image image = imageIcon.getImage().getScaledInstance(originalWidth, originalHeight, Image.SCALE_SMOOTH);
+                jLabel.setIcon(new ImageIcon(image));
+            } else {
+                System.out.println("Surely its dead");
+            }
         } else {
-            System.out.println("Surely its dead");
+            JOptionPane.showMessageDialog(this, "Xin loi, ban khong quyen han de thuc hien chuc nang nay !");
         }
         return imagePath;
+
     }
 
     private void handleDeleteCourse(JButton jButton) {
-        String maKhoaHoc = "";
-        if (jButton.getName().contains("1")) {
-            maKhoaHoc = txtcode1.getText();
-        } else if (jButton.getName().contains("2")) {
-            maKhoaHoc = txtcode2.getText();
-        } else {
-            maKhoaHoc = txtcode3.getText();
-        }
+        String role = UserSession.getRole();
+        if (role.equals("Manager")) {
+            String maKhoaHoc = "";
+            if (jButton.getName().contains("1")) {
+                maKhoaHoc = txtcode1.getText();
+            } else if (jButton.getName().contains("2")) {
+                maKhoaHoc = txtcode2.getText();
+            } else {
+                maKhoaHoc = txtcode3.getText();
+            }
 
-        int result = khoaHocDAO.deleteKhoaHoc(maKhoaHoc);
-        if (result > 0) {
-            JOptionPane.showMessageDialog(this, "Xóa thành công!");
-            courses = khoaHocDAO.loadCoursesFromDatabase();
-            updateUI(courses);
-            revalidate();
-            repaint();
+            int result = khoaHocDAO.deleteKhoaHoc(maKhoaHoc);
+            if (result > 0) {
+                JOptionPane.showMessageDialog(this, "Xóa thành công!");
+                courses = khoaHocDAO.loadCoursesFromDatabase();
+                updateUI(courses);
+                revalidate();
+                repaint();
 
+            } else {
+                JOptionPane.showMessageDialog(this, "Xóa thất bại!");
+            }
         } else {
-            JOptionPane.showMessageDialog(this, "Xóa thất bại!");
+            JOptionPane.showMessageDialog(this, "Xin loi, ban khong quyen han de thuc hien chuc nang nay !");
         }
     }
     private void txtsearchbarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtsearchbarMouseClicked
@@ -769,17 +813,30 @@ public class CoursesFrame extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        String role = UserSession.getRole();
+        if (role.equals("Manager")) {
+            int confirm = JOptionPane.showConfirmDialog(this, "Bạn muốn thêm chuyên đề hay khóa học");
 
-        int confirm = JOptionPane.showConfirmDialog(this, "Bạn muốn thêm chuyên đề hay khóa học");
-
-        if (confirm == JOptionPane.YES_OPTION) {
-            this.dispose();
-            new InsertCourseFrame().setVisible(true);
+            if (confirm == JOptionPane.YES_OPTION) {
+                this.dispose();
+                new InsertCourseFrame().setVisible(true);
+            } else if (confirm == JOptionPane.NO_OPTION) {
+                this.dispose();
+                new InsertTopicFrame().setVisible(true);
+            } else {
+                this.setVisible(true);
+            }
         } else {
-            this.dispose();
-            new InsertTopicFrame().setVisible(true);
+            JOptionPane.showMessageDialog(this, "Ban khogn du dang cap");
         }
+
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        new ClerkFrame().setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -840,6 +897,7 @@ public class CoursesFrame extends javax.swing.JFrame {
     private javax.swing.JButton btndetails2;
     private javax.swing.JButton btndetails3;
     private javax.swing.JButton btnsearch;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

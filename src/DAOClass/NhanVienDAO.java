@@ -63,4 +63,29 @@ public class NhanVienDAO {
         return executeQuery(query);
     }
 
+    public int insertNhanVien(String maNhanVien, String hoTen, String gioiTinh, String soDienThoai,
+            String diaChi, Boolean vaiTro, String matKhau) {
+        String query = "INSERT INTO NhanVien (MaNhanVien, HoTen, GioiTinh, SoDienThoai, DiaChi, VaiTro, MatKhau) VALUES (?,?,?,?,?,?,?)";
+
+        Object[] params = {maNhanVien, hoTen, gioiTinh, soDienThoai, diaChi, vaiTro, matKhau};
+
+        return executeUpdate(query, params);
+    }
+
+    public int updateNhanVien(String maNhanVien, String hoTen, String gioiTinh, String soDienThoai,
+            String diaChi, Boolean vaiTro, String matKhau) {
+        String query = "UPDATE NhanVien SET HoTen = ?, GioiTinh = ?, SoDienThoai = ?, DiaChi = ?, VaiTro = ?, MatKhau = ? WHERE MaNhanVien = ?";
+
+        Object[] params = {hoTen, gioiTinh, soDienThoai, diaChi, vaiTro, matKhau, maNhanVien};
+
+        return executeUpdate(query, params);
+    }
+
+    public int deleteNhanVien(String maNhanVien) {
+        String query = "DELETE FROM NhanVien WHERE MaNhanVien = ?";
+        Object[] params = {maNhanVien};
+
+        return executeUpdate(query, params);
+    }
+
 }

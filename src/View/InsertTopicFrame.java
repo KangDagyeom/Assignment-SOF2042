@@ -5,6 +5,7 @@
 package View;
 
 import DAOClass.ChuyenDeDAO;
+import DAOClass.UserSession;
 import java.awt.Image;
 import java.io.File;
 import javax.swing.ImageIcon;
@@ -26,7 +27,41 @@ public class InsertTopicFrame extends javax.swing.JFrame {
 
     public InsertTopicFrame() {
         initComponents();
+        loadUserData();
         this.setLocationRelativeTo(null);
+    }
+
+    private void loadUserData() {
+        String username = UserSession.getUsername();
+        String role = UserSession.getRole();
+        String gioiTinh = UserSession.getGioiTinh();
+
+        txtusername.setText(username);
+        txtrole.setText(role);
+        setAvatar(gioiTinh);
+        if (username == null || role == null || gioiTinh == null) {
+            JOptionPane.showMessageDialog(this, "Lỗi: Chưa có thông tin đăng nhập!");
+            return;
+        }
+    }
+
+    private void setAvatar(String gioiTinh) {
+        String imagePath = "";
+        if (gioiTinh.equals("Nam")) {
+            imagePath = "C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Male-user-img.png"; // Thay đường dẫn file thật
+        } else if (gioiTinh.equals("Nu")) {
+            imagePath = "C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Female-user-img.png"; // Thay đường dẫn file thật
+        } else {
+            imagePath = "C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Unknow-user-img.png"; // Avatar mặc định
+        }
+
+        // Kiểm tra file tồn tại trước khi đặt icon
+        File file = new File(imagePath);
+        if (file.exists()) {
+            lbavatar.setIcon(new ImageIcon(imagePath));
+        } else {
+            System.out.println("⚠ Lỗi: Không tìm thấy hình ảnh tại " + imagePath);
+        }
     }
 
     /**
