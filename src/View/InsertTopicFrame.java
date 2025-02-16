@@ -6,8 +6,15 @@ package View;
 
 import DAOClass.ChuyenDeDAO;
 import DAOClass.UserSession;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -24,11 +31,35 @@ public class InsertTopicFrame extends javax.swing.JFrame {
      */
     private ChuyenDeDAO chuyenDeDAO = new ChuyenDeDAO();
     private String imagePath = "";
+    private Map<String, Font> fontCache = new HashMap<>();
 
     public InsertTopicFrame() {
         initComponents();
+        loadFont("Poppins-SemiBold", "/fonts/FZ Poppins-SemiBold.ttf");
+        loadFont("Poppins-Regular", "/fonts/FZ Poppins-Regular.ttf");
+        txtusername.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 16));
+        txtrole.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 14));
         loadUserData();
         this.setLocationRelativeTo(null);
+    }
+
+    private void loadFont(String fontName, String path) {
+        try (InputStream fontStream = getClass().getResourceAsStream(path)) {
+            if (fontStream == null) {
+                System.err.println("Font file not found: " + path);
+                return;
+            }
+            Font font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
+            fontCache.put(fontName, font);
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Font getCustomFont(String fontName, int style, float size) {
+        Font baseFont = fontCache.get(fontName);
+        return (baseFont != null) ? baseFont.deriveFont(style, size) : new Font("SansSerif", style, (int) size);
     }
 
     private void loadUserData() {
@@ -75,9 +106,6 @@ public class InsertTopicFrame extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         test1 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         lbavatar = new javax.swing.JLabel();
@@ -98,6 +126,11 @@ public class InsertTopicFrame extends javax.swing.JFrame {
         btnupload = new javax.swing.JButton();
         btninsertcourse = new javax.swing.JButton();
         lbtopiccontainer = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -106,28 +139,6 @@ public class InsertTopicFrame extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/App-logo-homeview.png"))); // NOI18N
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 28, -1, -1));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Courses-clicked-btn.png"))); // NOI18N
-        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, -1, -1));
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Performance-unclick-btn.png"))); // NOI18N
-        jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, -1, -1));
-
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Logout-unclick-btn.png"))); // NOI18N
-        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel5MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, -1, -1));
 
         test1.setForeground(new java.awt.Color(255, 255, 255));
         test1.setText("Course Activity");
@@ -185,6 +196,7 @@ public class InsertTopicFrame extends javax.swing.JFrame {
         lbtopicimg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Empty-img.png"))); // NOI18N
 
         btnupload.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnupload.setForeground(new java.awt.Color(255, 255, 255));
         btnupload.setText("Upload");
         btnupload.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnupload.addActionListener(new java.awt.event.ActionListener() {
@@ -194,6 +206,7 @@ public class InsertTopicFrame extends javax.swing.JFrame {
         });
 
         btninsertcourse.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btninsertcourse.setForeground(new java.awt.Color(255, 255, 255));
         btninsertcourse.setText("Insert topic");
         btninsertcourse.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btninsertcourse.addActionListener(new java.awt.event.ActionListener() {
@@ -273,6 +286,51 @@ public class InsertTopicFrame extends javax.swing.JFrame {
         lbtopiccontainer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Topics-courses-container.png"))); // NOI18N
         jPanel1.add(lbtopiccontainer, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 100, -1, -1));
 
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Performance-unclick-btn.png"))); // NOI18N
+        jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, -1, -1));
+
+        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Courses-clicked-btn.png"))); // NOI18N
+        jLabel14.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel14.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel14MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, -1, -1));
+
+        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Clerks-unclick-btn.png"))); // NOI18N
+        jLabel15.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel15.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel15MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 90, -1));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Stu-unclick-btn.png"))); // NOI18N
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, 130, -1));
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Logout-unclick-btn.png"))); // NOI18N
+        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel5MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -337,18 +395,33 @@ public class InsertTopicFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txttopiccodeActionPerformed
 
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        // TODO add your handling code here:
+        HomeFrame.getInstance().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel14MouseClicked
+
+    private void jLabel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        new ClerkFrame().setVisible(true);
+    }//GEN-LAST:event_jLabel15MouseClicked
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        new StudentFrame().setVisible(true);
+    }//GEN-LAST:event_jLabel1MouseClicked
+
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         // TODO add your handling code here:
         this.dispose();
         new GoodbyeFrame().setVisible(true);
     }//GEN-LAST:event_jLabel5MouseClicked
-
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        // TODO add your handling code here:
-        this.dispose();
-        CoursesFrame prCoursesFrame = new CoursesFrame();
-        prCoursesFrame.setVisible(true);
-    }//GEN-LAST:event_jLabel1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -392,6 +465,8 @@ public class InsertTopicFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

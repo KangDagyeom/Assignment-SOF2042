@@ -6,9 +6,17 @@ package View;
 
 import DAOClass.Course;
 import DAOClass.KhoaHocDAO;
+import DAOClass.UserSession;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -25,10 +33,68 @@ public class InsertCourseFrame extends javax.swing.JFrame {
      */
     private KhoaHocDAO khoaHocDAO = new KhoaHocDAO();
     private String imagePath = "";
-    
+    private Map<String, Font> fontCache = new HashMap<>();
+
     public InsertCourseFrame() {
         initComponents();
+        loadFont("Poppins-SemiBold", "/fonts/FZ Poppins-SemiBold.ttf");
+        loadFont("Poppins-Regular", "/fonts/FZ Poppins-Regular.ttf");
+        txtusername.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 16));
+        txtrole.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 14));
+        loadUserData();
         this.setLocationRelativeTo(null);
+    }
+
+    private void loadFont(String fontName, String path) {
+        try (InputStream fontStream = getClass().getResourceAsStream(path)) {
+            if (fontStream == null) {
+                System.err.println("Font file not found: " + path);
+                return;
+            }
+            Font font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
+            fontCache.put(fontName, font);
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Font getCustomFont(String fontName, int style, float size) {
+        Font baseFont = fontCache.get(fontName);
+        return (baseFont != null) ? baseFont.deriveFont(style, size) : new Font("SansSerif", style, (int) size);
+    }
+
+    private void loadUserData() {
+        String username = UserSession.getUsername();
+        String role = UserSession.getRole();
+        String gioiTinh = UserSession.getGioiTinh();
+
+        txtusername.setText(username);
+        txtrole.setText(role);
+        setAvatar(gioiTinh);
+        if (username == null || role == null || gioiTinh == null) {
+            JOptionPane.showMessageDialog(this, "Lỗi: Chưa có thông tin đăng nhập!");
+            return;
+        }
+    }
+
+    private void setAvatar(String gioiTinh) {
+        String imagePath = "";
+        if (gioiTinh.equals("Nam")) {
+            imagePath = "C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Male-user-img.png"; // Thay đường dẫn file thật
+        } else if (gioiTinh.equals("Nu")) {
+            imagePath = "C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Female-user-img.png"; // Thay đường dẫn file thật
+        } else {
+            imagePath = "C:\\Users\\Hyun\\Desktop\\Assignment-SOF2042\\src\\Resources\\Unknow-user-img.png"; // Avatar mặc định
+        }
+
+        // Kiểm tra file tồn tại trước khi đặt icon
+        File file = new File(imagePath);
+        if (file.exists()) {
+            lbavatar.setIcon(new ImageIcon(imagePath));
+        } else {
+            System.out.println("⚠ Lỗi: Không tìm thấy hình ảnh tại " + imagePath);
+        }
     }
 
     /**
@@ -43,9 +109,6 @@ public class InsertCourseFrame extends javax.swing.JFrame {
         jInternalFrame1 = new javax.swing.JInternalFrame();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         test1 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         lbavatar = new javax.swing.JLabel();
@@ -68,6 +131,11 @@ public class InsertCourseFrame extends javax.swing.JFrame {
         btnupload = new javax.swing.JButton();
         btninsertcourse = new javax.swing.JButton();
         lbtopiccontainer = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         jInternalFrame1.setVisible(true);
 
@@ -89,28 +157,6 @@ public class InsertCourseFrame extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/App-logo-homeview.png"))); // NOI18N
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 28, -1, -1));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Courses-clicked-btn.png"))); // NOI18N
-        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, -1, -1));
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Performance-unclick-btn.png"))); // NOI18N
-        jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, -1, -1));
-
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Logout-unclick-btn.png"))); // NOI18N
-        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel5MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, -1, -1));
 
         test1.setForeground(new java.awt.Color(255, 255, 255));
         test1.setText("Course Activity");
@@ -172,6 +218,7 @@ public class InsertCourseFrame extends javax.swing.JFrame {
         lbcourseimg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Empty-img.png"))); // NOI18N
 
         btnupload.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnupload.setForeground(new java.awt.Color(255, 255, 255));
         btnupload.setText("Upload");
         btnupload.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnupload.addActionListener(new java.awt.event.ActionListener() {
@@ -181,6 +228,7 @@ public class InsertCourseFrame extends javax.swing.JFrame {
         });
 
         btninsertcourse.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btninsertcourse.setForeground(new java.awt.Color(255, 255, 255));
         btninsertcourse.setText("Insert course");
         btninsertcourse.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btninsertcourse.addActionListener(new java.awt.event.ActionListener() {
@@ -266,6 +314,51 @@ public class InsertCourseFrame extends javax.swing.JFrame {
         lbtopiccontainer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Topics-courses-container.png"))); // NOI18N
         jPanel1.add(lbtopiccontainer, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 100, -1, -1));
 
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Performance-unclick-btn.png"))); // NOI18N
+        jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, -1, -1));
+
+        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Courses-clicked-btn.png"))); // NOI18N
+        jLabel14.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel14.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel14MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, -1, -1));
+
+        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Clerks-unclick-btn.png"))); // NOI18N
+        jLabel15.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel15.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel15MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 90, -1));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Stu-unclick-btn.png"))); // NOI18N
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, 130, -1));
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Logout-unclick-btn.png"))); // NOI18N
+        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel5MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -290,19 +383,6 @@ public class InsertCourseFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        // TODO add your handling code here:
-        this.dispose();
-        CoursesFrame prCoursesFrame = new CoursesFrame();
-        prCoursesFrame.setVisible(true);
-    }//GEN-LAST:event_jLabel1MouseClicked
-
-    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-        // TODO add your handling code here:
-        this.dispose();
-        new GoodbyeFrame().setVisible(true);
-    }//GEN-LAST:event_jLabel5MouseClicked
-
     private void txtcoursecodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcoursecodeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtcoursecodeActionPerformed
@@ -318,7 +398,7 @@ public class InsertCourseFrame extends javax.swing.JFrame {
         int result = khoaHocDAO.insertKhoaHoc(courseCode, courseName, desc, courseImg, price, status);
         if (result > 0) {
             JOptionPane.showMessageDialog(this, "Thêm khóa học thành công!");
-            
+
         } else {
             JOptionPane.showMessageDialog(this, "Thêm thất bại thất bại!");
         }
@@ -328,6 +408,34 @@ public class InsertCourseFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         handleCourseImg(lbcourseimg);
     }//GEN-LAST:event_btnuploadActionPerformed
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        // TODO add your handling code here:
+        HomeFrame.getInstance().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel14MouseClicked
+
+    private void jLabel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        new ClerkFrame().setVisible(true);
+    }//GEN-LAST:event_jLabel15MouseClicked
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        new StudentFrame().setVisible(true);
+    }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        new GoodbyeFrame().setVisible(true);
+    }//GEN-LAST:event_jLabel5MouseClicked
     private void handleCourseImg(JLabel jLabel) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -336,7 +444,7 @@ public class InsertCourseFrame extends javax.swing.JFrame {
             File file = fileChooser.getSelectedFile();
             imagePath = file.getAbsolutePath();
             System.out.println("Đường dẫn ảnh: " + imagePath);
-            
+
             ImageIcon imageIcon = new ImageIcon(imagePath);
             Image image = imageIcon.getImage().getScaledInstance(230, 232, Image.SCALE_SMOOTH);
             jLabel.setIcon(new ImageIcon(image));
@@ -388,6 +496,8 @@ public class InsertCourseFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

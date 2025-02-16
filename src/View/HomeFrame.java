@@ -433,9 +433,14 @@ public class HomeFrame extends javax.swing.JFrame {
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         // TODO add your handling code here:
-        this.dispose();
-        CoursesFrame prCoursesFrame = new CoursesFrame();
-        prCoursesFrame.setVisible(true);
+        String role = UserSession.getRole();
+        if (role.equals("Manager")) {
+            this.dispose();
+            new CoursesFrameMn().setVisible(true);
+        } else {
+            this.dispose();
+            new CoursesFrame().setVisible(true);
+        }
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
