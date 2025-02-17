@@ -452,11 +452,11 @@ public class StudentFrame extends javax.swing.JFrame {
         String birthdateStr = txtbirthdate.getText();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         if (maHocVien.isEmpty()) {
-            showMessage("Mã nhân viên không được để trống!");
+            showMessage("Mã học viên không được để trống!");
             return;
         }
         if (tenHocVien.isEmpty()) {
-            showMessage("Tên nhân viên không được để trống!");
+            showMessage("Tên học viên không được để trống!");
             return;
         }
         if (!soDienThoai.matches("^\\d{10}$")) {
@@ -472,11 +472,11 @@ public class StudentFrame extends javax.swing.JFrame {
             java.sql.Date sqlDate = new java.sql.Date(ngaySinh.getTime());
             int result = hocVienDAO.insertHocVien(maHocVien, tenHocVien, sqlDate, soDienThoai, diaChi);
             if (result > 0) {
-                showMessage("Thêm nhân viên thành công!");
+                showMessage("Thêm học viên thành công!");
                 list = hocVienDAO.getList();
                 loadData(list);
             } else {
-                showMessage("Lỗi khi thêm nhân viên!");
+                showMessage("Lỗi khi thêm học viên!");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -493,11 +493,11 @@ public class StudentFrame extends javax.swing.JFrame {
         String birthdateStr = txtbirthdate.getText();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         if (maHocVien.isEmpty()) {
-            showMessage("Mã nhân viên không được để trống!");
+            showMessage("Mã học viên không được để trống!");
             return;
         }
         if (tenHocVien.isEmpty()) {
-            showMessage("Tên nhân viên không được để trống!");
+            showMessage("Tên học viên không được để trống!");
             return;
         }
         if (!soDienThoai.matches("^\\d{10}$")) {
@@ -513,11 +513,11 @@ public class StudentFrame extends javax.swing.JFrame {
             java.sql.Date sqlDate = new java.sql.Date(ngaySinh.getTime());
             int result = hocVienDAO.updateHocVien(maHocVien, tenHocVien, sqlDate, soDienThoai, diaChi);
             if (result > 0) {
-                showMessage("Sửa nhân viên thành công!");
+                showMessage("Sửa học viên thành công!");
                 list = hocVienDAO.getList();
                 loadData(list);
             } else {
-                showMessage("Lỗi khi sửa nhân viên!");
+                showMessage("Lỗi khi sửa học viên!");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -529,11 +529,11 @@ public class StudentFrame extends javax.swing.JFrame {
         String maHocVien = txtstcode.getText().trim();
         int result = hocVienDAO.deleteHocVien(maHocVien);
         if (result > 0) {
-            JOptionPane.showMessageDialog(this, "Xoa nhan vien thanh cong");
+            JOptionPane.showMessageDialog(this, "Xóa học viên thành công !");
             list = hocVienDAO.getList();
             loadData(list);
         } else {
-            JOptionPane.showMessageDialog(this, "Toi cung chiu roi");
+            JOptionPane.showMessageDialog(this, "Xóa thất bại !");
         }
     }//GEN-LAST:event_btndeleteMouseClicked
 
@@ -572,7 +572,7 @@ public class StudentFrame extends javax.swing.JFrame {
     public void loadNhanVienFromTable() {
         int selectedRow = tblHocVien.getSelectedRow(); // Lấy dòng được chọn
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn một nhân viên!");
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một học viên!");
             return;
         }
 

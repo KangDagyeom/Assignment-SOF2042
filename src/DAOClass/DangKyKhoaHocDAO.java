@@ -37,18 +37,19 @@ public class DangKyKhoaHocDAO {
         return list;
     }
 
-    public int insertDangKy(String maHocVien, String maKhoaHoc, String tenLop, Timestamp ngayDangKy, String trangThai, double diem) {
-        String query = "INSERT INTO DangKyKhoaHoc (IDHocVien, IDKhoaHoc, IDLopHoc, NgayDangKy, TrangThai, Diem) "
+    public int insertDangKy(String maHocVien, String maKhoaHoc, String tenLop, Timestamp ngayDangKy, double hocPhi, String trangThai, double diem) {
+        String query = "INSERT INTO DangKyKhoaHoc (IDHocVien, IDKhoaHoc, IDLopHoc, NgayDangKy, HocPhi, TrangThai, Diem) "
                 + "VALUES ((SELECT IDHocVien FROM HocVien WHERE MaHocVien = ?), "
                 + "        (SELECT IDKhoaHoc FROM KhoaHoc WHERE MaKhoaHoc = ?), "
-                + "        (SELECT IDLopHoc FROM LopHoc WHERE TenLop = ?), ?, ?, ?)";
+                + "        (SELECT IDLopHoc FROM LopHoc WHERE TenLop = ?), ?, ?, ?, ?)";
         try (Connection conn = getConnect(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, maHocVien);
             ps.setString(2, maKhoaHoc);
             ps.setString(3, tenLop);
             ps.setTimestamp(4, ngayDangKy);
-            ps.setString(5, trangThai);
-            ps.setDouble(6, diem);
+            ps.setDouble(5, hocPhi);  // Đã thêm đúng vị trí
+            ps.setString(6, trangThai);
+            ps.setDouble(7, diem);
             return ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -56,7 +57,7 @@ public class DangKyKhoaHocDAO {
         }
     }
 
-    public int updateDangKy(UUID idHocVien, UUID idKhoaHoc, UUID idLopHoc, Timestamp ngayDangKy, double hocPhi, String trangThai, double diem) {
+    public int updateDangKy(String idHocVien, String idKhoaHoc, String idLopHoc, Timestamp ngayDangKy, double hocPhi, String trangThai, double diem) {
         String query = "UPDATE DangKyKhoaHoc SET NgayDangKy=?, HocPhi=?, TrangThai=?, Diem=? WHERE IDHocVien=? AND IDKhoaHoc=? AND IDLopHoc=?";
         try (Connection conn = getConnect(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setTimestamp(1, ngayDangKy);
@@ -73,7 +74,7 @@ public class DangKyKhoaHocDAO {
         }
     }
 
-    public int deleteDangKy(UUID idHocVien, UUID idKhoaHoc, UUID idLopHoc) {
+    public int deleteDangKy(String idHocVien, String idKhoaHoc, String idLopHoc) {
         String query = "DELETE FROM DangKyKhoaHoc WHERE IDHocVien=? AND IDKhoaHoc=? AND IDLopHoc=?";
         try (Connection conn = getConnect(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setObject(1, idHocVien);

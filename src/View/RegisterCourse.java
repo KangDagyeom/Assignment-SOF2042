@@ -229,7 +229,7 @@ public class RegisterCourse extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Student code", "Class name", "Course code", "Tuition fee", "Status", "Registered Date"
+                "Student code", "Class name", "Course code", "Tuition fee", "Status", "Registered Date", "Point"
             }
         ));
         tblDangKy.setGridColor(new java.awt.Color(0, 102, 255));
@@ -297,49 +297,42 @@ public class RegisterCourse extends javax.swing.JFrame {
                 .addGap(46, 46, 46)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(516, 516, 516))
+                        .addComponent(jLabel13)
+                        .addGap(221, 221, 221)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel7))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtdate)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(cbostatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 37, Short.MAX_VALUE))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(110, 110, 110)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel11))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txtclassname, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtcoursecode, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addComponent(txtcoursecode, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                            .addComponent(txtfee, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(36, 36, 36)))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel13)
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addGap(110, 110, 110)
-                                                .addComponent(txtfee, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(36, 36, 36)))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel12)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel7))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtdate)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(cbostatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addComponent(jLabel4)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(txtstcode, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(jLabel11))
-                                        .addGap(199, 199, 199)
-                                        .addComponent(txtpoint, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                                        .addComponent(txtstcode, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(53, 53, 53)))
+                                .addGap(134, 134, 134)
+                                .addComponent(txtpoint, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(135, 135, 135)
                 .addComponent(btninsert, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -544,7 +537,7 @@ public class RegisterCourse extends javax.swing.JFrame {
             Timestamp ngayDangKy;
             try {
                 if (ngayDangKyStr.isEmpty()) {
-                    ngayDangKy = new Timestamp(System.currentTimeMillis()); // Nếu rỗng -> lấy ngày hiện tại
+                    ngayDangKy = new Timestamp(System.currentTimeMillis());
                 } else {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     ngayDangKy = new Timestamp(sdf.parse(ngayDangKyStr).getTime());
@@ -555,9 +548,11 @@ public class RegisterCourse extends javax.swing.JFrame {
             }
 
             // ✅ Dữ liệu hợp lệ -> gọi DAO để thêm vào DB
-            int result = dangKyKhoaHocDAO.insertDangKy(maHocVien, maKhoaHoc, tenLop, ngayDangKy, status, diem);
+            int result = dangKyKhoaHocDAO.insertDangKy(maHocVien, maKhoaHoc, tenLop, ngayDangKy, hocPhi, status, diem);
             if (result > 0) {
                 showMessage("Đăng ký khóa học thành công!");
+                list = dangKyKhoaHocDAO.getAllDangKy();
+                loadData(list);
             } else {
                 showMessage("Lỗi khi đăng ký khóa học!");
             }
@@ -569,44 +564,86 @@ public class RegisterCourse extends javax.swing.JFrame {
     }//GEN-LAST:event_btninsertMouseClicked
 
     private void btnupdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnupdateMouseClicked
-        String maNhanVien = txtnvcode.getText().trim();
-        String tenNhanVien = txtnvname.getText().trim();
-        String gioiTinh = cbonvgender.getSelectedItem().toString();
-        String soDienThoai = txtsdt.getText().trim();
-        String diaChi = txtdiachi.getText().trim();
-        String matKhau = txtpassword.getText().trim();
-
-        boolean vaiTro = rdtrue.isSelected();
-
-        if (maNhanVien.isEmpty()) {
-            showMessage("Mã nhân viên không được để trống!");
-            return;
-        }
-        if (tenNhanVien.isEmpty()) {
-            showMessage("Tên nhân viên không được để trống!");
-            return;
-        }
-        if (!soDienThoai.matches("^\\d{10}$")) {
-            showMessage("Số điện thoại phải có đúng 10 chữ số!");
-            return;
-        }
-        if (diaChi.isEmpty()) {
-            showMessage("Địa chỉ không được để trống!");
-            return;
-        }
-        if (matKhau.length() < 6) {
-            showMessage("Mật khẩu phải có ít nhất 6 ký tự!");
-            return;
-        }
-
         try {
-            int result = nhanVienDAO.updateNhanVien(maNhanVien, tenNhanVien, gioiTinh, soDienThoai, diaChi, vaiTro, matKhau);
+            // Lấy dữ liệu từ giao diện
+            String maHocVien = txtstcode.getText().trim();
+            String tenLop = txtclassname.getText().trim();
+            String maKhoaHoc = txtcoursecode.getText().trim();
+            String hocPhiStr = txtfee.getText().trim();
+            String status = cbostatus.getSelectedItem().toString();
+            String ngayDangKyStr = txtdate.getText().trim();
+            String diemStr = txtpoint.getText().trim();
+
+            // 🛑 1. Kiểm tra dữ liệu rỗng
+            if (maHocVien.isEmpty()) {
+                showMessage("Mã học viên không được để trống!");
+                return;
+            }
+            if (tenLop.isEmpty()) {
+                showMessage("Tên lớp không được để trống!");
+                return;
+            }
+            if (maKhoaHoc.isEmpty()) {
+                showMessage("Mã khóa học không được để trống!");
+                return;
+            }
+            if (hocPhiStr.isEmpty()) {
+                showMessage("Học phí không được để trống!");
+                return;
+            }
+            if (diemStr.isEmpty()) {
+                showMessage("Điểm không được để trống!");
+                return;
+            }
+
+            // 🛑 2. Kiểm tra học phí phải là số dương
+            double hocPhi;
+            try {
+                hocPhi = Double.parseDouble(hocPhiStr);
+                if (hocPhi <= 0) {
+                    showMessage("Học phí phải lớn hơn 0!");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                showMessage("Học phí phải là số hợp lệ!");
+                return;
+            }
+
+            // 🛑 3. Kiểm tra điểm hợp lệ (trong khoảng 0 - 10)
+            double diem;
+            try {
+                diem = Double.parseDouble(diemStr);
+                if (diem < 0 || diem > 10) {
+                    showMessage("Điểm phải nằm trong khoảng từ 0 đến 10!");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                showMessage("Điểm phải là số hợp lệ!");
+                return;
+            }
+
+            // 🛑 4. Kiểm tra ngày đăng ký (chấp nhận ngày hiện tại nếu rỗng)
+            Timestamp ngayDangKy;
+            try {
+                if (ngayDangKyStr.isEmpty()) {
+                    ngayDangKy = new Timestamp(System.currentTimeMillis());
+                } else {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    ngayDangKy = new Timestamp(sdf.parse(ngayDangKyStr).getTime());
+                }
+            } catch (ParseException e) {
+                showMessage("Ngày đăng ký không hợp lệ! Định dạng đúng: yyyy-MM-dd");
+                return;
+            }
+
+            // ✅ Dữ liệu hợp lệ -> gọi DAO để thêm vào DB
+            int result = dangKyKhoaHocDAO.updateDangKy(maHocVien, maKhoaHoc, tenLop, ngayDangKy, hocPhi, status, diem);
             if (result > 0) {
-                showMessage("Sửa nhân viên thành công!");
-                list = nhanVienDAO.getList();
+                showMessage("Chỉnh sửa đăng ký khóa học thành công!");
+                list = dangKyKhoaHocDAO.getAllDangKy();
                 loadData(list);
             } else {
-                showMessage("Lỗi khi sửa nhân viên!");
+                showMessage("Lỗi sửa đăng ký khóa học!");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -615,15 +652,33 @@ public class RegisterCourse extends javax.swing.JFrame {
 
     private void btndeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btndeleteMouseClicked
         // TODO add your handling code here:
-        String maNhanVien = txtnvcode.getText().trim();
-        int result = nhanVienDAO.deleteNhanVien(maNhanVien);
-        if (result > 0) {
-            JOptionPane.showMessageDialog(this, "Xoa nhan vien thanh cong");
-            list = nhanVienDAO.getList();
-            loadData(list);
-        } else {
-            JOptionPane.showMessageDialog(this, "Toi cung chiu roi");
+        try {
+            String maHocVien = txtstcode.getText().trim();
+            String tenLop = txtclassname.getText().trim();
+            String maKhoaHoc = txtcoursecode.getText().trim();
+            if (maHocVien.isEmpty()) {
+                showMessage("Mã học viên không được để trống!");
+                return;
+            }
+            if (tenLop.isEmpty()) {
+                showMessage("Tên lớp không được để trống!");
+                return;
+            }
+            if (maKhoaHoc.isEmpty()) {
+                showMessage("Mã khóa học không được để trống!");
+                return;
+            }
+            int result = dangKyKhoaHocDAO.deleteDangKy(maHocVien, maKhoaHoc, tenLop);
+            if (result > 0) {
+                JOptionPane.showMessageDialog(this, "Xóa đăng ký thành công !");
+                list = dangKyKhoaHocDAO.getAllDangKy();
+                loadData(list);
+            } else {
+                JOptionPane.showMessageDialog(this, "Lỗi xóa đăng ký !");
+            }
+        } catch (Exception e) {
         }
+
     }//GEN-LAST:event_btndeleteMouseClicked
 
     private void tblDangKyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDangKyMouseClicked
