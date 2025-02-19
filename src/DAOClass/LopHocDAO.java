@@ -80,4 +80,19 @@ public class LopHocDAO {
             return -1;
         }
     }
+
+    public ArrayList<Integer> getSiSo() {
+        ArrayList<Integer> siSoList = new ArrayList<>();
+        String query = "SELECT SiSo FROM LopHoc";
+
+        try (Connection conn = getConnect(); PreparedStatement ps = conn.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                siSoList.add(rs.getInt("SiSo"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return siSoList;
+    }
+
 }

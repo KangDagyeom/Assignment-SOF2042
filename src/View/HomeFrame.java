@@ -5,12 +5,17 @@
 package View;
 
 import DAOClass.ChuyenDeDAO;
+import DAOClass.LopHocDAO;
 import DAOClass.Topic;
 import DAOClass.UserSession;
 import Models.ChuyenDe;
+import Models.LopHoc;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.FontMetrics;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,18 +43,22 @@ public class HomeFrame extends javax.swing.JFrame {
      */
     private Map<String, Font> fontCache = new HashMap<>();
     private ChuyenDeDAO chuyenDeDAO = new ChuyenDeDAO();
+    private LopHocDAO lopHocDAO = new LopHocDAO();
     private ArrayList<ChuyenDe> list = chuyenDeDAO.getListChuyenDe();
+    private ArrayList<Integer> lopHocs = lopHocDAO.getSiSo();
     private static HomeFrame instance;
-    
+
     private ArrayList<Topic> topics = chuyenDeDAO.loadTopicsFromDatabase();
     private int currentPage = 0;
     private final int ITEMS_PER_PAGE = 4;
-    
+
     public HomeFrame() {
-        
+
         initComponents();
         this.setLocationRelativeTo(null);
+
         updateUI();
+        updateSiSo();
         loadUserData();
 
         // Tải các font từ thư mục resources
@@ -60,44 +69,47 @@ public class HomeFrame extends javax.swing.JFrame {
         test1.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 20));
         lbtitle1.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 13));
         lbdescription1.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 12));
-        
+
         lbtitle2.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 13));
         lbdescription2.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 12));
-        
+
         lbtitle3.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 13));
         lbdescription3.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 12));
-        
+
         lbtitle4.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 13));
         lbdescription4.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 12));
-        
+
         date.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 14));
         txtcourses.setFont(getCustomFont("Poppins-Regular", Font.PLAIN, 16));
         txtcalendar.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 20));
         txtusername.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 16));
         txtrole.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 14));
-        lbsiso1.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 28));
+        lbsiso1.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 22));
+        lbsiso2.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 22));
+        lbsiso3.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 22));
+        lbsiso4.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 22));
+
         System.out.println("Font dang dung: " + txtcourses.getFont().getFontName());
         Date d = new Date();
         SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM", Locale.ENGLISH);
         SimpleDateFormat dayFormat = new SimpleDateFormat("d");
         SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
-        
+
         String month = monthFormat.format(d);
         int day = Integer.parseInt(dayFormat.format(d));
         String year = yearFormat.format(d);
-        
+
         String suffix = "th";
         String formattedDate = month + " " + day + suffix + ", " + year;
-        
+
         date.setText(formattedDate);
         System.out.println(formattedDate);
     }
-    
+
     private void loadUserData() {
         String username = UserSession.getUsername();
         String role = UserSession.getRole();
         String gioiTinh = UserSession.getGioiTinh();
-        
         txtusername.setText(username);
         txtrole.setText(role);
         setAvatar(gioiTinh);
@@ -106,14 +118,14 @@ public class HomeFrame extends javax.swing.JFrame {
             return;
         }
     }
-    
+
     public static HomeFrame getInstance() {
         if (instance == null) {
             instance = new HomeFrame();
         }
         return instance;
     }
-    
+
     private void loadFont(String fontName, String path) {
         try (InputStream fontStream = getClass().getResourceAsStream(path)) {
             if (fontStream == null) {
@@ -127,7 +139,7 @@ public class HomeFrame extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+
     private Font getCustomFont(String fontName, int style, float size) {
         Font baseFont = fontCache.get(fontName);
         return (baseFont != null) ? baseFont.deriveFont(style, size) : new Font("SansSerif", style, (int) size);
@@ -141,13 +153,13 @@ public class HomeFrame extends javax.swing.JFrame {
             System.out.println(font);
         }
     }
-    
+
     private void updateUI() {
         int start = currentPage * ITEMS_PER_PAGE;
         JLabel[] titleLabels = {lbtitle1, lbtitle2, lbtitle3, lbtitle4};
         JLabel[] descLabels = {lbdescription1, lbdescription2, lbdescription3, lbdescription4};
         JLabel[] iconLabels = {lbicon1, lbicon2, lbicon3, lbicon4};
-        
+
         for (int i = 0; i < ITEMS_PER_PAGE; i++) {
             int index = start + i;
             if (index < topics.size()) {
@@ -166,9 +178,24 @@ public class HomeFrame extends javax.swing.JFrame {
                 iconLabels[i].setIcon(null);
             }
         }
-        
+
     }
-    
+
+    private void updateSiSo() {
+        int start = currentPage * ITEMS_PER_PAGE;
+        JLabel[] titleLabels = {lbsiso1, lbsiso2, lbsiso3, lbsiso4};
+
+        for (int i = 0; i < ITEMS_PER_PAGE; i++) {
+            int index = start + i;
+            if (index < lopHocs.size()) {
+                titleLabels[i].setText(String.valueOf(lopHocs.get(index)));
+
+            } else {
+                titleLabels[i].setText("N/A");
+            }
+        }
+    }
+
     private void setAvatar(String gioiTinh) {
         String imagePath = "";
         if (gioiTinh.equals("Nam")) {
@@ -203,18 +230,17 @@ public class HomeFrame extends javax.swing.JFrame {
         lbicon3 = new javax.swing.JLabel();
         lbicon1 = new javax.swing.JLabel();
         lbicon2 = new javax.swing.JLabel();
+        lbsiso2 = new javax.swing.JLabel();
         lbdescription1 = new javax.swing.JLabel();
         lbtitle2 = new javax.swing.JLabel();
+        lbsiso3 = new javax.swing.JLabel();
         lbdescription2 = new javax.swing.JLabel();
+        lbsiso4 = new javax.swing.JLabel();
         lbtitle3 = new javax.swing.JLabel();
         lbdescription3 = new javax.swing.JLabel();
         lbtitle4 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        lbsiso1 = new javax.swing.JLabel();
         lbdescription4 = new javax.swing.JLabel();
-        lbsiso4 = new javax.swing.JLabel();
-        lbsiso3 = new javax.swing.JLabel();
-        lbsiso2 = new javax.swing.JLabel();
+        lbsiso1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -233,9 +259,6 @@ public class HomeFrame extends javax.swing.JFrame {
         lbavatar = new javax.swing.JLabel();
         txtrole = new javax.swing.JLabel();
         txtusername = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        txtimgcat = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
         btnNext = new javax.swing.JButton();
         Container_course = new javax.swing.JLabel();
@@ -262,6 +285,11 @@ public class HomeFrame extends javax.swing.JFrame {
         lbicon2.setForeground(new java.awt.Color(0, 0, 0));
         jPanel1.add(lbicon2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 270, -1, -1));
 
+        lbsiso2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lbsiso2.setForeground(new java.awt.Color(51, 51, 51));
+        lbsiso2.setText("12");
+        jPanel1.add(lbsiso2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 270, -1, -1));
+
         lbdescription1.setForeground(new java.awt.Color(255, 255, 255));
         lbdescription1.setText("jLabel15");
         lbdescription1.setPreferredSize(new java.awt.Dimension(200, 50));
@@ -271,10 +299,20 @@ public class HomeFrame extends javax.swing.JFrame {
         lbtitle2.setText("jLabel12");
         jPanel1.add(lbtitle2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 280, -1, -1));
 
+        lbsiso3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lbsiso3.setForeground(new java.awt.Color(51, 51, 51));
+        lbsiso3.setText("12");
+        jPanel1.add(lbsiso3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 400, -1, -1));
+
         lbdescription2.setForeground(new java.awt.Color(255, 255, 255));
         lbdescription2.setText("jLabel15");
         lbdescription2.setPreferredSize(new java.awt.Dimension(200, 50));
         jPanel1.add(lbdescription2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 290, 160, -1));
+
+        lbsiso4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lbsiso4.setForeground(new java.awt.Color(51, 51, 51));
+        lbsiso4.setText("12");
+        jPanel1.add(lbsiso4, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 530, -1, -1));
 
         lbtitle3.setForeground(new java.awt.Color(255, 255, 255));
         lbtitle3.setText("jLabel12");
@@ -289,42 +327,15 @@ public class HomeFrame extends javax.swing.JFrame {
         lbtitle4.setText("jLabel12");
         jPanel1.add(lbtitle4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 540, -1, -1));
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setForeground(new java.awt.Color(255, 255, 255));
-
-        lbsiso1.setForeground(new java.awt.Color(0, 0, 0));
-        lbsiso1.setText("12");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(lbsiso1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addComponent(lbsiso1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 140, 30, 30));
-
         lbdescription4.setForeground(new java.awt.Color(255, 255, 255));
         lbdescription4.setText("jLabel15");
         lbdescription4.setPreferredSize(new java.awt.Dimension(200, 50));
         jPanel1.add(lbdescription4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 550, 160, -1));
 
-        lbsiso4.setText("12");
-        jPanel1.add(lbsiso4, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 540, -1, -1));
-
-        lbsiso3.setText("12");
-        jPanel1.add(lbsiso3, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 410, -1, -1));
-
-        lbsiso2.setText("12");
-        jPanel1.add(lbsiso2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 280, -1, -1));
+        lbsiso1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lbsiso1.setForeground(new java.awt.Color(51, 51, 51));
+        lbsiso1.setText("12");
+        jPanel1.add(lbsiso1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 140, -1, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/App-logo-homeview.png"))); // NOI18N
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 28, -1, -1));
@@ -407,18 +418,7 @@ public class HomeFrame extends javax.swing.JFrame {
 
         txtusername.setForeground(new java.awt.Color(0, 0, 0));
         txtusername.setText("Username");
-        jPanel1.add(txtusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 20, -1, -1));
-
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Blue-line-img.png"))); // NOI18N
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 100, -1, -1));
-
-        txtimgcat.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
-        txtimgcat.setForeground(new java.awt.Color(0, 0, 0));
-        txtimgcat.setText("Today's cat");
-        jPanel1.add(txtimgcat, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 70, -1, -1));
-
-        jLabel14.setText("Today");
-        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 110, -1, -1));
+        jPanel1.add(txtusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 20, -1, -1));
 
         btnBack.setText("Back");
         btnBack.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -458,6 +458,7 @@ public class HomeFrame extends javax.swing.JFrame {
         if ((currentPage + 1) * ITEMS_PER_PAGE < topics.size()) {
             currentPage++;
             updateUI();
+            updateSiSo();
         }
     }//GEN-LAST:event_btnNextActionPerformed
 
@@ -466,6 +467,7 @@ public class HomeFrame extends javax.swing.JFrame {
         if (currentPage > 0) {
             currentPage--;
             updateUI();
+            updateSiSo();
         }
     }//GEN-LAST:event_btnBackActionPerformed
 
@@ -501,21 +503,21 @@ public class HomeFrame extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                    
+
                 }
             }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(HomeFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(HomeFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(HomeFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(HomeFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
@@ -525,7 +527,7 @@ public class HomeFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
+
                 new HomeFrame().setVisible(true);
             }
         });
@@ -539,8 +541,6 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -550,7 +550,6 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lbavatar;
     private javax.swing.JLabel lbdescription1;
     private javax.swing.JLabel lbdescription2;
@@ -571,7 +570,6 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JLabel test1;
     private javax.swing.JLabel txtcalendar;
     private javax.swing.JLabel txtcourses;
-    private javax.swing.JLabel txtimgcat;
     private javax.swing.JLabel txtrole;
     private javax.swing.JLabel txtusername;
     // End of variables declaration//GEN-END:variables
