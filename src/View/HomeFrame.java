@@ -75,6 +75,7 @@ public class HomeFrame extends javax.swing.JFrame {
         txtcalendar.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 20));
         txtusername.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 16));
         txtrole.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 14));
+        lbsiso1.setFont(getCustomFont("Poppins-SemiBold", Font.PLAIN, 28));
         System.out.println("Font dang dung: " + txtcourses.getFont().getFontName());
         Date d = new Date();
         SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM", Locale.ENGLISH);
@@ -208,7 +209,12 @@ public class HomeFrame extends javax.swing.JFrame {
         lbtitle3 = new javax.swing.JLabel();
         lbdescription3 = new javax.swing.JLabel();
         lbtitle4 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        lbsiso1 = new javax.swing.JLabel();
         lbdescription4 = new javax.swing.JLabel();
+        lbsiso4 = new javax.swing.JLabel();
+        lbsiso3 = new javax.swing.JLabel();
+        lbsiso2 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -283,10 +289,42 @@ public class HomeFrame extends javax.swing.JFrame {
         lbtitle4.setText("jLabel12");
         jPanel1.add(lbtitle4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 540, -1, -1));
 
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setForeground(new java.awt.Color(255, 255, 255));
+
+        lbsiso1.setForeground(new java.awt.Color(0, 0, 0));
+        lbsiso1.setText("12");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(lbsiso1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addComponent(lbsiso1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 140, 30, 30));
+
         lbdescription4.setForeground(new java.awt.Color(255, 255, 255));
         lbdescription4.setText("jLabel15");
         lbdescription4.setPreferredSize(new java.awt.Dimension(200, 50));
         jPanel1.add(lbdescription4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 550, 160, -1));
+
+        lbsiso4.setText("12");
+        jPanel1.add(lbsiso4, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 540, -1, -1));
+
+        lbsiso3.setText("12");
+        jPanel1.add(lbsiso3, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 410, -1, -1));
+
+        lbsiso2.setText("12");
+        jPanel1.add(lbsiso2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 280, -1, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/App-logo-homeview.png"))); // NOI18N
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 28, -1, -1));
@@ -512,6 +550,7 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lbavatar;
     private javax.swing.JLabel lbdescription1;
     private javax.swing.JLabel lbdescription2;
@@ -521,6 +560,10 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lbicon2;
     private javax.swing.JLabel lbicon3;
     private javax.swing.JLabel lbicon4;
+    private javax.swing.JLabel lbsiso1;
+    private javax.swing.JLabel lbsiso2;
+    private javax.swing.JLabel lbsiso3;
+    private javax.swing.JLabel lbsiso4;
     private javax.swing.JLabel lbtitle1;
     private javax.swing.JLabel lbtitle2;
     private javax.swing.JLabel lbtitle3;
