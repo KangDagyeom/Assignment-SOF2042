@@ -6,9 +6,13 @@ package View;
 
 import DAOClass.ChuyenDeDAO;
 import DAOClass.DangKyKhoaHocDAO;
+import DAOClass.HocVienDAO;
+import DAOClass.KhoaHocDAO;
+import DAOClass.LopHocDAO;
 import DAOClass.NhanVienDAO;
 import DAOClass.UserSession;
 import Models.DangKyKhoaHoc;
+import Models.HocVien;
 import Models.NhanVien;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -42,6 +46,12 @@ public class RegisterCourse extends javax.swing.JFrame {
      */
     private DangKyKhoaHocDAO dangKyKhoaHocDAO = new DangKyKhoaHocDAO();
     private ArrayList<DangKyKhoaHoc> list = dangKyKhoaHocDAO.getAllDangKy();
+    private HocVienDAO hocVienDAO = new HocVienDAO();
+    private ArrayList<String> getMaHV = hocVienDAO.getMaHocVien();
+    private LopHocDAO lopHocDAO = new LopHocDAO();
+    private ArrayList<String> getTenLop = lopHocDAO.getTenLop();
+    private KhoaHocDAO khoaHocDAO = new KhoaHocDAO();
+    private ArrayList<String> getMaKhoaHoc = khoaHocDAO.getMaKhoaHoc();
     private String imagePath = "";
     private Map<String, Font> fontCache = new HashMap<>();
 
@@ -78,18 +88,24 @@ public class RegisterCourse extends javax.swing.JFrame {
     private void loadData(ArrayList<DangKyKhoaHoc> list) {
         DefaultTableModel model = (DefaultTableModel) tblDangKy.getModel();
         model.setRowCount(0);
-        for (DangKyKhoaHoc dangKyKhoaHoc : list) {
+
+        int minSize = Math.min(getMaHV.size(), Math.min(getTenLop.size(), getMaKhoaHoc.size())); // Đảm bảo không bị lỗi IndexOutOfBoundsException
+
+        for (int i = 0; i < Math.min(list.size(), minSize); i++) {
+            DangKyKhoaHoc dangKyKhoaHoc = list.get(i);
+            String maHV = getMaHV.get(i);
+            String tenLop = getTenLop.get(i);
+            String maKH = getMaKhoaHoc.get(i);
+
             model.addRow(new Object[]{
-                dangKyKhoaHoc.getIdHocVien(),
-                dangKyKhoaHoc.getIdLopHoc(),
-                dangKyKhoaHoc.getIdKhoaHoc(),
+                maHV,
+                tenLop,
+                maKH,
                 dangKyKhoaHoc.getHocPhi(),
                 dangKyKhoaHoc.getTrangThai(),
-                dangKyKhoaHoc.getDiem(),
-                dangKyKhoaHoc.getNgayDangKy()
-
-            }
-            );
+                dangKyKhoaHoc.getNgayDangKy(),
+                dangKyKhoaHoc.getDiem()
+            });
         }
     }
 
@@ -714,35 +730,30 @@ public class RegisterCourse extends javax.swing.JFrame {
         new GoodbyeFrame().setVisible(true);
     }//GEN-LAST:event_jLabel5MouseClicked
     public void loadNhanVienFromTable() {
-        int selectedRow = tblNhanVien.getSelectedRow(); // Lấy dòng được chọn
+        int selectedRow = tblDangKy.getSelectedRow(); // Lấy dòng được chọn
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn một nhân viên!");
             return;
         }
 
         // Lấy dữ liệu từ JTable
-        String maNhanVien = tblNhanVien.getValueAt(selectedRow, 0).toString();
-        String hoTen = tblNhanVien.getValueAt(selectedRow, 1).toString();
-        String gioiTinh = tblNhanVien.getValueAt(selectedRow, 2).toString();
-        String soDienThoai = tblNhanVien.getValueAt(selectedRow, 3).toString();
-        String diaChi = tblNhanVien.getValueAt(selectedRow, 4).toString();
-        String vaiTro = tblNhanVien.getValueAt(selectedRow, 5).toString();
-        String matKhau = tblNhanVien.getValueAt(selectedRow, 6).toString();
+        String maHocVien = tblDangKy.getValueAt(selectedRow, 0).toString();
+        String tenLop = tblDangKy.getValueAt(selectedRow, 1).toString();
+        String maKhoaHoc = tblDangKy.getValueAt(selectedRow, 2).toString();
+        String hocPhi = tblDangKy.getValueAt(selectedRow, 3).toString();
+        String TrangThai = tblDangKy.getValueAt(selectedRow, 4).toString();
+        String ngayDangKy = tblDangKy.getValueAt(selectedRow, 5).toString();
+        String diem = tblDangKy.getValueAt(selectedRow, 6).toString();
 
         // Hiển thị dữ liệu lên form
-        txtnvcode.setText(maNhanVien);
-        txtnvname.setText(hoTen);
-        cbonvgender.setSelectedItem(gioiTinh);
-        txtsdt.setText(soDienThoai);
-        txtdiachi.setText(diaChi);
+        txtstcode.setText(maHocVien);
+        txtclassname.setText(tenLop);
+        txtcoursecode.setText(maKhoaHoc);
+        cbostatus.setSelectedItem(TrangThai);
+        txtfee.setText(hocPhi);
+        txtdate.setText(ngayDangKy);
+        txtpoint.setText(diem);
 
-        if (vaiTro.equals("Manager")) {
-            rdtrue.setSelected(true);
-        } else {
-            rdfalse.setSelected(true);
-        }
-
-        txtpassword.setText(matKhau);
     }
 
     /**
@@ -759,16 +770,24 @@ public class RegisterCourse extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InsertTopicFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InsertTopicFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InsertTopicFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InsertTopicFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InsertTopicFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InsertTopicFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InsertTopicFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InsertTopicFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>

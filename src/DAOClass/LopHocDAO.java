@@ -94,5 +94,19 @@ public class LopHocDAO {
         }
         return siSoList;
     }
+    public ArrayList<String> getTenLop() {
+        ArrayList<String> getTenLop = new ArrayList<>();
+
+        String query = "SELECT TenLop FROM LopHoc";
+
+        try (Connection conn = getConnect(); PreparedStatement ps = conn.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                getTenLop.add(rs.getString("TenLop"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return getTenLop;
+    }
 
 }

@@ -83,4 +83,20 @@ public class HocVienDAO {
         Object[] params = {maHocVien};
         return executeUpdate(query, params);
     }
+
+    public ArrayList<String> getMaHocVien() {
+        ArrayList<String> getMaHV = new ArrayList<>();
+
+        String query = "SELECT MaHocVien FROM HocVien";
+
+        try (Connection conn = getConnect(); PreparedStatement ps = conn.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                getMaHV.add(rs.getString("MaHocVien"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return getMaHV;
+    }
+
 }

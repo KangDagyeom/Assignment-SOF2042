@@ -139,4 +139,19 @@ public class KhoaHocDAO {
         );
     }
 
+    public ArrayList<String> getMaKhoaHoc() {
+        ArrayList<String> getMaKH = new ArrayList<>();
+
+        String query = "SELECT MaKhoaHoc FROM KhoaHoc";
+
+        try (Connection conn = getConnect(); PreparedStatement ps = conn.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                getMaKH.add(rs.getString("MaKhoaHoc"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return getMaKH;
+    }
+
 }

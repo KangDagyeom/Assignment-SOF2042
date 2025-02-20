@@ -3,30 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/View/HomeFrame.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/View/CoursesFrame.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/DAOClass/NhanVienDAO.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/DAOClass/KhoaHocDAO.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/DAOClass/LopHocDAO.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/DAOClass/DangKyKhoaHocDAO.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/DAOClass/ChuyenDeDAO.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/View/InsertCourseFrame.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/DAOClass/HocVienDAO.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/View/LoginFrame.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/View/RegisterCourse.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/Models/ChuyenDe.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/Models/DangKyKhoaHoc.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/DAOClass/Course.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/Models/HocVien.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/View/InsertTopicFrame.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/DAOClass/Topic.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/View/StudentFrame.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/View/CoursesFrameMn.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/DAOClass/UserSession.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/Models/LopHoc.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/View/GoodbyeFrame.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/View/ClerkFrame.java</file>
-            <file>file:/C:/Users/Hyun/Desktop/Assignment-SOF2042/src/Models/KhoaHoc.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/Assignment-SOF2042/src/DAOClass/ChuyenDeDAO.java</file>
         </group>
     </open-files>
 </project-private>
