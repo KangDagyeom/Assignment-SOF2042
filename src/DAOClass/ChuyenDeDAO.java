@@ -110,4 +110,9 @@ public class ChuyenDeDAO {
         return executeUpdate(query2, maChuyenDe);
     }
 
+    public int updateChuyenDe(String maChuyenDeMoi, String tenChuyenDe, String hinhChuyenDe, String moTa, Double hocPhi) {
+        String query = "UPDATE ChuyenDe SET TenChuyenDe = ?, HinhChuyenDe = ?, MoTa = ?, HocPhi = ? WHERE MaChuyenDe = ?";
+        return executeUpdate(query, tenChuyenDe, hinhChuyenDe, moTa, hocPhi, maChuyenDeMoi);
+    }
+
 }
