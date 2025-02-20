@@ -79,9 +79,15 @@ public class HocVienDAO {
     }
 
     public int deleteHocVien(String maHocVien) {
-        String query = "DELETE FROM HocVien WHERE MaHocVien = ?";
-        Object[] params = {maHocVien};
-        return executeUpdate(query, params);
+
+        String query1 = "DELETE FROM DangKyChuyenDe WHERE IDHocVien IN (SELECT IDHocVien FROM HocVien WHERE MaHocVien = ?)";
+        String query2 = "DELETE FROM DangKyKhoaHoc WHERE IDHocVien IN (SELECT IDHocVien FROM HocVien WHERE MaHocVien = ?)";
+
+        String query3 = "DELETE FROM HocVien WHERE MaHocVien = ?";
+
+        executeUpdate(query1, maHocVien);
+        executeUpdate(query2, maHocVien);
+        return executeUpdate(query3, maHocVien);
     }
 
     public ArrayList<String> getMaHocVien() {

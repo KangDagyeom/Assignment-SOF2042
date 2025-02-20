@@ -100,4 +100,14 @@ public class ChuyenDeDAO {
         );
     }
 
+    public int deleteChuyenDe(String maChuyenDe) {
+
+        String query1 = "DELETE FROM DangKyChuyenDe WHERE IDChuyenDe IN (SELECT IDChuyenDe FROM ChuyenDe WHERE MaChuyenDe = ?)";
+
+        String query2 = "DELETE FROM ChuyenDe WHERE MaChuyenDe = ?";
+
+        executeUpdate(query1, maChuyenDe);
+        return executeUpdate(query2, maChuyenDe);
+    }
+
 }

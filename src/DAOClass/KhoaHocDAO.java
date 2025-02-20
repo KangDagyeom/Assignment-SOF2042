@@ -123,8 +123,13 @@ public class KhoaHocDAO {
     }
 
     public int deleteKhoaHoc(String maKhoaHoc) {
-        String query = "DELETE FROM KhoaHoc WHERE MaKhoaHoc = ?";
-        return executeUpdate(query, maKhoaHoc);
+        String query1 = "DELETE FROM DangKyKhoaHoc WHERE IDKhoaHoc IN (SELECT IDKhoaHoc FROM KhoaHoc WHERE MaKhoaHoc = ?)";
+        String query2 = "DELETE FROM PhanCongGiangVien WHERE IDKhoaHoc IN (SELECT IDKhoaHoc FROM KhoaHoc WHERE MaKhoaHoc = ?)";
+        String query3 = "DELETE FROM KhoaHoc WHERE MaKhoaHoc = ?";
+
+        executeUpdate(query1, maKhoaHoc);
+        executeUpdate(query2, maKhoaHoc);
+        return executeUpdate(query3, maKhoaHoc);
     }
 
     public int insertKhoaHoc(String maKhoaHoc, String tenKhoaHoc, String moTa, String hinhKhoaHoc, Double hocPhi, String trangThai) {

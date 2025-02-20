@@ -74,16 +74,19 @@ public class DangKyKhoaHocDAO {
         }
     }
 
-    public int deleteDangKy(String idHocVien, String idKhoaHoc, String idLopHoc) {
-        String query = "DELETE FROM DangKyKhoaHoc WHERE IDHocVien=? AND IDKhoaHoc=? AND IDLopHoc=?";
+    public int deleteDangKy(String maHocVien, String maKhoaHoc, String tenLop) {
+        String query = "DELETE FROM DangKyKhoaHoc WHERE IDHocVien IN (SELECT IDHocVien FROM HocVien WHERE MaHocVien = ?) "
+                + "AND IDKhoaHoc IN (SELECT IDKhoaHoc FROM KhoaHoc WHERE MaKhoaHoc = ?) "
+                + "AND IDLopHoc IN (SELECT IDLopHoc FROM LopHoc WHERE TenLop = ?)";
         try (Connection conn = getConnect(); PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setObject(1, idHocVien);
-            ps.setObject(2, idKhoaHoc);
-            ps.setObject(3, idLopHoc);
+            ps.setString(1, maHocVien);
+            ps.setString(2, maKhoaHoc);
+            ps.setString(3, tenLop);
             return ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }
     }
+
 }

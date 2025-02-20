@@ -70,11 +70,19 @@ public class LopHocDAO {
         }
     }
 
-    public int deleteLopHoc(UUID idLopHoc) {
-        String query = "DELETE FROM LopHoc WHERE IDLopHoc=?";
-        try (Connection conn = getConnect(); PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setObject(1, idLopHoc);
-            return ps.executeUpdate();
+    public int deleteLopHocByTen(String tenLop) {
+
+        String deleteFromChild = "DELETE FROM DangKyKhoaHoc WHERE IDLopHoc IN (SELECT IDLopHoc FROM LopHoc WHERE TenLop=?)";
+
+        String deleteFromParent = "DELETE FROM LopHoc WHERE TenLop=?";
+
+        try (Connection conn = getConnect(); PreparedStatement ps1 = conn.prepareStatement(deleteFromChild); PreparedStatement ps2 = conn.prepareStatement(deleteFromParent)) {
+
+            ps1.setString(1, tenLop);
+            ps1.executeUpdate();
+
+            ps2.setString(1, tenLop);
+            return ps2.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
@@ -94,6 +102,7 @@ public class LopHocDAO {
         }
         return siSoList;
     }
+
     public ArrayList<String> getTenLop() {
         ArrayList<String> getTenLop = new ArrayList<>();
 
