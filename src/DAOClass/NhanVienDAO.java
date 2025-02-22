@@ -88,4 +88,11 @@ public class NhanVienDAO {
         return executeUpdate(query, params);
     }
 
+    public int updateMatKhau(String maNhanVien, String matKhauMoi) {
+        String query = "UPDATE NhanVien SET MatKhau = ? WHERE MaNhanVien = ?";
+        Object[] params = {matKhauMoi, maNhanVien};
+
+        return executeUpdate(query, params);
+    }
+
 }

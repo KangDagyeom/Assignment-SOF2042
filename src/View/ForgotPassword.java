@@ -15,7 +15,7 @@ import javax.swing.SwingUtilities;
  *
  * @author Hyun
  */
-public class LoginFrame extends javax.swing.JFrame {
+public class ForgotPassword extends javax.swing.JFrame {
 
     /**
      * Creates new form LoginFrame
@@ -23,7 +23,7 @@ public class LoginFrame extends javax.swing.JFrame {
     NhanVienDAO crud_dao = new NhanVienDAO();
     ArrayList<NhanVien> list = crud_dao.getList();
     
-    public LoginFrame() {
+    public ForgotPassword() {
         initComponents();
         SwingUtilities.invokeLater(() -> {
             
@@ -41,7 +41,7 @@ public class LoginFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        txtusername = new javax.swing.JTextField();
+        txtoldpassword = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtpassword = new javax.swing.JPasswordField();
@@ -59,14 +59,14 @@ public class LoginFrame extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        txtusername.setBackground(new java.awt.Color(255, 255, 255));
-        txtusername.setBorder(null);
-        txtusername.addActionListener(new java.awt.event.ActionListener() {
+        txtoldpassword.setBackground(new java.awt.Color(255, 255, 255));
+        txtoldpassword.setBorder(null);
+        txtoldpassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtusernameActionPerformed(evt);
+                txtoldpasswordActionPerformed(evt);
             }
         });
-        jPanel1.add(txtusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, 240, 20));
+        jPanel1.add(txtoldpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, 240, 20));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/App-Logo.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 19, -1, -1));
@@ -82,9 +82,14 @@ public class LoginFrame extends javax.swing.JFrame {
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, -1, -1));
 
         btnlogin.setBackground(new java.awt.Color(255, 255, 255));
-        btnlogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Login-button.png"))); // NOI18N
+        btnlogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Renewal-button.png"))); // NOI18N
         btnlogin.setBorder(null);
         btnlogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnlogin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnloginMouseClicked(evt);
+            }
+        });
         btnlogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnloginActionPerformed(evt);
@@ -93,11 +98,11 @@ public class LoginFrame extends javax.swing.JFrame {
         jPanel1.add(btnlogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 320, -1, -1));
 
         jLabel5.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel5.setText("Forgot your password ?");
+        jLabel5.setText("Updated your password ?");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 370, -1, -1));
 
         jLabel6.setForeground(new java.awt.Color(204, 0, 0));
-        jLabel6.setText("Click here !");
+        jLabel6.setText("Login now !");
         jLabel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -106,7 +111,7 @@ public class LoginFrame extends javax.swing.JFrame {
         });
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 370, -1, -1));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Username-field.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Oldpassword-field.png"))); // NOI18N
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -124,21 +129,21 @@ public class LoginFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
-        String username = txtusername.getText();
-        String password = new String(txtpassword.getPassword());
+        String oldPassword = txtoldpassword.getText();
+        String newPassword = new String(txtpassword.getPassword());
         Boolean check = false;
         
         for (NhanVien nhanVien : list) {
-            if (nhanVien.getMaNhanVien().equals(username) && nhanVien.getMatKhau().equals(password)) {
-                System.out.println("OK");
-                String role = nhanVien.getVaiTro() ? "Manager" : "Clerk";
-                String tenNV = nhanVien.getHoTen();
-                String gioiTinh = nhanVien.getGioiTinh();
-                UserSession.setUser(tenNV, role, gioiTinh);
-                new HomeFrame().setVisible(true);
-                this.dispose();
+            if (nhanVien.getMatKhau().equals(oldPassword)) {
+                int result = crud_dao.updateMatKhau(nhanVien.getMaNhanVien(), newPassword);
                 
-                this.dispose();
+                if (result > 0) {
+                    JOptionPane.showMessageDialog(this, "Password updated successfully!");
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Password update failed!");
+                }
+                
                 check = true;
                 break;
             }
@@ -149,14 +154,18 @@ public class LoginFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnloginActionPerformed
 
-    private void txtusernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtusernameActionPerformed
+    private void txtoldpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtoldpasswordActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtusernameActionPerformed
+    }//GEN-LAST:event_txtoldpasswordActionPerformed
+
+    private void btnloginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnloginMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnloginMouseClicked
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         // TODO add your handling code here:
         this.dispose();
-        new ForgotPassword().setVisible(true);
+        new LoginFrame().setVisible(true);
     }//GEN-LAST:event_jLabel6MouseClicked
 
     /**
@@ -176,20 +185,21 @@ public class LoginFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ForgotPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ForgotPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ForgotPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ForgotPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoginFrame().setVisible(true);
+                new ForgotPassword().setVisible(true);
             }
         });
     }
@@ -203,7 +213,7 @@ public class LoginFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField txtoldpassword;
     private javax.swing.JPasswordField txtpassword;
-    private javax.swing.JTextField txtusername;
     // End of variables declaration//GEN-END:variables
 }
